@@ -13,7 +13,7 @@ Ce projet est conçu pour interagir avec le backend (disponible dans un autre re
 ## Technologies utilisées
 
 - **React 18** (avec **Vite** pour un environnement de développement rapide)
-- **JavaScript (ES6+)**
+- **JavaScript**
 - **Chakra-UI** pour les composants et le style
 - **Axios** pour les appels API
 - **React Router** pour la navigation
