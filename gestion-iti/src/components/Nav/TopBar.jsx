@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '../Div/UserAvatar.jsx';
 import Badges from '../Div/Badges.jsx'
-import { Switch } from "@/components/ui/switch"// Import du composant UserAvatar
+import { ColorModeButton } from "@/components/ui/color-mode"
 import './TopBar.css';
 
 const TopBar = () => {
@@ -11,7 +11,7 @@ const TopBar = () => {
 
             <div className="top-bar-right">
                 <Badges/>
-                <Switch></Switch>
+                <ColorModeButton />
                 <Avatar/> {/* Utilisation de UserAvatar */}
             </div>
 
