@@ -1,8 +1,10 @@
 .nav-bar{
     display: flex;
+    align-items: center;
     justify-content: space-around;
     background-color: #ffffff;
     color: black;
     margin: 10px;
     border-radius: 20px;
+    height: 5em;
 }
