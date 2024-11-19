@@ -1,0 +1,21 @@
+
+
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: white;
+    color: black;
+    padding: 10px;
+
+}
+
+
+.top-bar-right{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+}

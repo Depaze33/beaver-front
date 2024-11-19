@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Map from './components/Map';
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import TopBar from "@/components/Nav/TopBar.jsx";
+import './App.css';
+
 
 function App() {
     return (
         <BrowserRouter>
+            <TopBar/>
             <Routes>
                 <Route>
                     <Route path='/map' element={<Map />} />
