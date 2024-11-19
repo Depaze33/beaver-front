@@ -10,12 +10,13 @@ function App() {
     return (
         <BrowserRouter>
             <TopBar/>
-            <NavBar/>
+
             <Routes>
                 <Route>
                     <Route path='/map' element={<Map />} />
                 </Route>
             </Routes>
+            <NavBar/>
         </BrowserRouter>
     );
 }

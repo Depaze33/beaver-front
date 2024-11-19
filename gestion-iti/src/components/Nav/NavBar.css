@@ -1,6 +1,8 @@
 .nav-bar{
+    display: flex;
+    justify-content: space-around;
     background-color: #ffffff;
-color: black;
+    color: black;
     margin: 10px;
     border-radius: 10px;
 }
