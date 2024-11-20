@@ -5,9 +5,9 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 10px;
-    width: 100%;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+
 }
 
 .search-bar:focus {
