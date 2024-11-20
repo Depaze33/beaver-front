@@ -1,29 +1,20 @@
-// ./components/Map.jsx
-
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { useGeolocated } from "react-geolocated";
 import "leaflet/dist/leaflet.css";
+import useGeoLocation from "./Hook/Hooks.jsx";
 
 const Map = () => {
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
-        positionOptions: {
-            enableHighAccuracy: false,
-        },
-        userDecisionTimeout: 5000,
-    });
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
 
-    // Mapping des emojis en fonction de la note
     const emojiMap = {
-        1: "😡", // Très mécontent
-        2: "😠", // Mécontent
-        3: "😐", // Neutre
-        4: "😊", // Satisfait
-        5: "😍", // Très satisfait
+        1: "😡",
+        2: "😠",
+        3: "😐",
+        4: "😊",
+        5: "😍",
     };
 
-    // État pour gérer la note sélectionnée
-    const [rating, setRating] = useState(3); // Note par défaut : Neutre
+    const [rating, setRating] = useState(3);
 
     if (!isGeolocationAvailable) {
         return <div>Your browser does not support Geolocation</div>;
@@ -33,7 +24,6 @@ const Map = () => {
         return <div>Geolocation is not enabled</div>;
     }
 
-    // Attendez que les coordonnées soient disponibles avant d'afficher la carte
     if (!coords) {
         return <div>Getting the location data&hellip;</div>;
     }

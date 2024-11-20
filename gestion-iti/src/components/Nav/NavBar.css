@@ -10,6 +10,7 @@
     z-index: 1000; /* Au-dessus des autres éléments */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ombre vers le haut */
     transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour le mode */
+    background-color: #1a202c;
 }
 
 /* Mode clair */
@@ -26,6 +27,7 @@
 
 /* Optionnel : effet au survol des liens */
 .nav-bar a {
+    color: #f7fafc;
     text-decoration: none;
     transition: color 0.3s ease;
 }

@@ -1,20 +1,18 @@
 import React from "react";
-import { useGeolocated } from "react-geolocated";
+import useGeoLocation from "../components/Hook/Hooks.jsx";
 
 const Geo = () => {
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-        useGeolocated({
-            positionOptions: {
-                enableHighAccuracy: false,
-            },
-            userDecisionTimeout: 5000,
-        });
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
 
-    return !isGeolocationAvailable ? (
-        <div>Your browser does not support Geolocation</div>
-    ) : !isGeolocationEnabled ? (
-        <div>Geolocation is not enabled</div>
-    ) : coords ? (
+    if (!isGeolocationAvailable) {
+        return <div>Your browser does not support Geolocation</div>;
+    }
+
+    if (!isGeolocationEnabled) {
+        return <div>Geolocation is not enabled</div>;
+    }
+
+    return coords ? (
         <table>
             <tbody>
             <tr>
@@ -40,7 +38,7 @@ const Geo = () => {
             </tbody>
         </table>
     ) : (
-        <div>Getting the location data&hellip; </div>
+        <div>Getting the location data&hellip;</div>
     );
 };
 
