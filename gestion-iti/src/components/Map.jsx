@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import React, {useState, useEffect, useRef} from "react";
+import {MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import useGeoLocation from "./Hook/Hooks.jsx";
-import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch"; // Hook pour la géolocalisation
-import L from "leaflet";
+import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"; // Hook pour la géolocalisation
+import {Checkbox} from "@/components/ui/checkbox"
 
-const RestaurantMarkers = ({ coords }) => {
+
+
+const RecherchMarkers = ({coords}) => {
     const [bars, setBars] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -18,17 +20,26 @@ const RestaurantMarkers = ({ coords }) => {
             setError(null);
             console.log("Fetching bars for coordinates:", coords);
 
-            const { latitude, longitude } = coords;
+            const {latitude, longitude} = coords;
             const radius = 1000; // Rayon de recherche en mètres
 
-            const query = `[out:json][timeout:25];
+            var queries
+            {
+                restaurant :`[out:json][timeout:25];
                nwr["amenity"="restaurant"](around:${radius},${latitude},${longitude});
                 out geom;`;
+                hostel : `[out:json][timeout:25];
+               nwr["tourism"="hostel"](around:${radius},${latitude},${longitude});
+                out geom;`
+                bar : `[out:json][timeout:25];
+               nwr["amenity"="bar"](around:${radius},${latitude},${longitude});
+                out geom;`
+            }
 
             try {
-                console.log("Query:", query);
+                console.log("Query:", queries);
                 const response = await fetch(
-                    `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`
+                    `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(queries)}`
                 );
 
                 if (!response.ok) throw new Error("Failed to fetch data");
@@ -60,7 +71,7 @@ const RestaurantMarkers = ({ coords }) => {
                 >
                     <Popup>
                         <strong>{bar.tags?.name || "Unnamed Bar"}</strong>
-                        <br />
+                        <br/>
                         Type: {bar.tags?.cuisine || "Unknown"}
                     </Popup>
                 </Marker>
@@ -94,7 +105,7 @@ const SearchControl = () => {
 };
 
 const Map = () => {
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
+    const {coords, isGeolocationAvailable, isGeolocationEnabled} = useGeoLocation();
 
     if (!isGeolocationAvailable) {
         return <div>Your browser does not support Geolocation</div>;
@@ -117,7 +128,7 @@ const Map = () => {
             center={position}
             zoom={15}
             scrollWheelZoom={false}
-            style={{ height: "100vh", width: "100%" }}
+            style={{height: "100vh", width: "100%"}}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -126,8 +137,8 @@ const Map = () => {
             <Marker position={position}>
                 <Popup>You are here!</Popup>
             </Marker>
-            <RestaurantMarkers coords={coords} />
-            <SearchControl />
+            <RecherchMarkers coords={coords}/>
+            <SearchControl/>
         </MapContainer>
     );
 };
