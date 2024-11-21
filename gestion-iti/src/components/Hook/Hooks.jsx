@@ -8,6 +8,12 @@ const useGeoLocation = () => {
         userDecisionTimeout: 5000,
     });
 
+    console.log("useGeoLocation Debug:", {
+        coords,
+        isGeolocationAvailable,
+        isGeolocationEnabled,
+    });
+
     return { coords, isGeolocationAvailable, isGeolocationEnabled };
 };
 

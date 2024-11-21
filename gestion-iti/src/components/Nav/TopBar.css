@@ -1,14 +1,20 @@
 
 
 .top-bar{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    position: fixed;
+    top: 0; /* Fixe la barre en bas */
+    left: 0;
     align-items: center;
-    height: 50px;
-    background-color: white;
-    color: black;
-    padding: 10px;
+    width: 99%; /* S'étend sur toute la largeur */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 5em;
+    z-index: 1000; /* Au-dessus des autres éléments */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ombre vers le haut */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour le mode */
+    background-color: #f7fafc;
+
 
 }
 
