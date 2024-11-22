@@ -37,7 +37,7 @@ const RecherchMarkers = ({ coords }) => {
 
             const query = `[out:json];
              (
-                nwr["tourism"="hostel"](around:${radius},${latitude},${longitude});
+                node["tourism"="hostel"](around:${radius},${latitude},${longitude});
                  node["amenity"="restaurant"](around:${radius},${latitude},${longitude});
                   node["amenity"="bar"](around:${radius},${latitude},${longitude});
                   node["amenity"="cafe"](around:${radius},${latitude},${longitude});
