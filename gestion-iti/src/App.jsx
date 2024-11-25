@@ -5,10 +5,13 @@ import TopBar from "@/components/Nav/TopBar.jsx";
  import NavBar from "@/components/Nav/NavBar.jsx";
 import Recommendation from "@/components/Recommendation/Recommendation.jsx";
 import './App.css';
+// import { ColorModeProvider } from "@/components/ui/color-mode"
+// import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
 
 
 function App() {
     return (
+
         <BrowserRouter>
             <TopBar/>
 
@@ -20,6 +23,7 @@ function App() {
             </Routes>
             <NavBar/>
         </BrowserRouter>
+
     );
 }
 

@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import PropTypes from 'prop-types';
-import {MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import useGeoLocation from "../Hook/Hooks.jsx";
-import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch"; // Hook pour la géolocalisation
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import L from "leaflet";
 
-
+// Icône rouge pour le marqueur
 const redIcon = new L.Icon({
     iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
     iconSize: [25, 41],
@@ -16,35 +16,36 @@ const redIcon = new L.Icon({
     shadowSize: [41, 41],
 });
 
-const RecherchMarkers = ({coords}) => {
+
+// Composant RecherchMarkers avec filtres
+const RecherchMarkers = ({ coords, filters }) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [notes, setNotes] = useState({}); // État pour les notes par ID de location
 
     useEffect(() => {
-        if (!coords) return;
+        if (!coords || filters.length === 0) return;
 
         const fetchLocations = async () => {
             setLoading(true);
             setError(null);
 
-
             const [latitude, longitude] = coords;
-            const radius = 5000; // Search radius in meters
+            const radius = 5000; // Rayon de recherche en mètres
+
+            // Construire la requête Overpass API en fonction des filtres sélectionnés
+            const typesQuery = filters
+                .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});`)
+                .join("");
 
             const query = `data=${encodeURIComponent(
                 `[out:json];
-        (nwr["tourism"="hostel"](around:${radius},${latitude},${longitude});
-        nwr["amenity"="restaurant"](around:${radius},${latitude},${longitude});
-        // nwr["amenity"="bar"](around:${radius},${latitude},${longitude});
-        // nwr["amenity"="cafe"](around:${radius},${latitude},${longitude});
-        // nwr["amenity"="fast_food"](around:${radius},${latitude},${longitude});
-        );
+        (${typesQuery});
         out geom;`
             )}`;
 
             try {
-
                 const response = await fetch(`https://overpass-api.de/api/interpreter`, {
                     method: "POST",
                     headers: {
@@ -57,23 +58,26 @@ const RecherchMarkers = ({coords}) => {
                     throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
                 }
 
-                const data = await response.json(); // Now this will work as JSON format is requested
-
-
+                const data = await response.json();
                 setLocations(data.elements || []);
             } catch (err) {
-
                 setError("Could not fetch locations. Please try again later.");
             } finally {
                 setLoading(false);
             }
         };
 
-
         fetchLocations();
-    }, [coords]);
+    }, [coords, filters]);
 
-    if (loading) return <div>Loading bars around you...</div>;
+    const handleNoteChange = (locationId, note) => {
+        setNotes((prevNotes) => ({
+            ...prevNotes,
+            [locationId]: note,
+        }));
+    };
+
+    if (loading) return <div>Loading locations...</div>;
     if (error) return <div>{error}</div>;
 
     return (
@@ -84,9 +88,30 @@ const RecherchMarkers = ({coords}) => {
                     position={[location.lat ?? location.bounds.maxlat, location.lon ?? location.bounds.maxlon]}
                 >
                     <Popup>
-                        <strong>{location.tags?.name || "Unnamed Bar"}</strong>
-                        <br/>
-                        Type: {location.tags?.cuisine || "Unknown"}
+                        <strong>{location.tags?.name || "Unnamed Location"}</strong>
+                        <br />
+                        Type: {location.tags?.cuisine || location.tags?.tourism || "Unknown"}
+                        <br />
+                        <div>
+                            <p>Rate this place:</p>
+                            <div style={{ display: "flex", gap: "5px" }}>
+                                {["👍", "😐", "👎"].map((emoji) => (
+                                    <button
+                                        key={emoji}
+                                        onClick={() => handleNoteChange(location.id, emoji)}
+                                        style={{
+                                            fontSize: "1.5rem",
+                                            background: notes[location.id] === emoji ? "#ddd" : "transparent",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        {emoji}
+                                    </button>
+                                ))}
+                            </div>
+                            {notes[location.id] && <p>Note: {notes[location.id]}</p>}
+                        </div>
                     </Popup>
                 </Marker>
             ))}
@@ -94,11 +119,14 @@ const RecherchMarkers = ({coords}) => {
     );
 };
 
-RecherchMarkers.propTypes = {
-    coords: PropTypes.arrayOf(PropTypes.number)
-}
 
-const SearchControl = ({onSearch}) => {
+RecherchMarkers.propTypes = {
+    coords: PropTypes.arrayOf(PropTypes.number),
+    filters: PropTypes.arrayOf(PropTypes.string),
+};
+
+// Composant SearchControl pour la recherche géolocalisée
+const SearchControl = ({ onSearch }) => {
     const map = useMap();
 
     useEffect(() => {
@@ -116,10 +144,9 @@ const SearchControl = ({onSearch}) => {
 
         map.addControl(searchControl);
 
-        // Handle search results
         map.on("geosearch/showlocation", (result) => {
-            const {lat, lng} = result.location;
-            onSearch([lat, lng]); // Update marker position
+            const { lat, lng } = result.location;
+            onSearch([lat, lng]);
         });
 
         return () => map.removeControl(searchControl);
@@ -127,14 +154,16 @@ const SearchControl = ({onSearch}) => {
 
     return null;
 };
+
 SearchControl.propTypes = {
-    onSearch: PropTypes.func
-}
+    onSearch: PropTypes.func,
+};
 
-
+// Composant Map avec filtres pour les types de lieux
 const Map = () => {
-    const {coords, isGeolocationAvailable, isGeolocationEnabled} = useGeoLocation();
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe"]); // Filtres par défaut
 
     useEffect(() => {
         if (coords) {
@@ -155,7 +184,7 @@ const Map = () => {
     }
 
     const handleMarkerDragEnd = (event) => {
-        const {lat, lng} = event.target.getLatLng();
+        const { lat, lng } = event.target.getLatLng();
         setMarkerPosition([lat, lng]);
     };
 
@@ -163,32 +192,53 @@ const Map = () => {
         setMarkerPosition(newPosition);
     };
 
+    const toggleFilter = (filter) => {
+        setFilters((prev) =>
+            prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+        );
+    };
+
     return (
-        <MapContainer
-            center={markerPosition || [coords.latitude, coords.longitude]}
-            zoom={14}
-            scrollWheelZoom={true}
-            style={{height: "100vh", width: "100%"}}
-        >
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {markerPosition && (
-                <Marker
-                    position={markerPosition}
-                    icon={redIcon} // Appliquer l'icône rouge ici
-                    draggable={true}
-                    eventHandlers={{
-                        dragend: handleMarkerDragEnd,
-                    }}
-                >
-                    <Popup>Your position</Popup>
-                </Marker>
-            )}
-            {markerPosition && <RecherchMarkers coords={markerPosition}/>}
-            <SearchControl onSearch={handleSearch}/>
-        </MapContainer>
+        <div className="map-container">
+            <div className="filters">
+                {["hostel", "restaurant", "bar", "cafe", "fast_food"].map((filter) => (
+                    <label key={filter} className="filter-label">
+                        <input
+                            type="checkbox"
+                            checked={filters.includes(filter)}
+                            onChange={() => toggleFilter(filter)}
+                            className="filter-checkbox"
+                        />
+                        {filter}
+                    </label>
+                ))}
+            </div>
+            <MapContainer
+                center={markerPosition || [coords.latitude, coords.longitude]}
+                zoom={14}
+                scrollWheelZoom={true}
+                style={{ height: "100vh", width: "100%" }}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {markerPosition && (
+                    <Marker
+                        position={markerPosition}
+                        icon={redIcon}
+                        draggable={true}
+                        eventHandlers={{
+                            dragend: handleMarkerDragEnd,
+                        }}
+                    >
+                        <Popup>Your position</Popup>
+                    </Marker>
+                )}
+                {markerPosition && <RecherchMarkers coords={markerPosition} filters={filters} />}
+                <SearchControl onSearch={handleSearch} />
+            </MapContainer>
+        </div>
     );
 };
 
