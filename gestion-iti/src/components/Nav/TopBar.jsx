@@ -3,10 +3,11 @@ import Avatar from '../Div/UserAvatar.jsx';
 import Badges from '../Div/Badges.jsx'
 import { ColorModeButton } from "@/components/ui/color-mode"
 import './TopBar.css';
+import {Flex} from "@chakra-ui/react";
 
 const TopBar = () => {
     return (
-        <div className="top-bar">
+        <Flex as = "header" className="top-bar">
             <h1 className="top-bar-title">Bienvenue</h1>
 
             <div className="top-bar-right">
@@ -15,7 +16,7 @@ const TopBar = () => {
                 <Avatar/> {/* Utilisation de UserAvatar */}
             </div>
 
-        </div>
+        </Flex>
     );
 };
 

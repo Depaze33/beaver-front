@@ -2,5 +2,10 @@
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
+    margin-top: 60px;
+    width: 100%;
 
+}
+.css-70qvj9{
+    width: 60%;
 }

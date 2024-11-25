@@ -61,7 +61,7 @@ const RecherchMarkers = ({ coords, filters }) => {
                 const data = await response.json();
                 setLocations(data.elements || []);
             } catch (err) {
-                setError("Could not fetch locations. Please try again later.");
+                setError("Could not fetch locations. Please try again later." + err);
             } finally {
                 setLoading(false);
             }
@@ -199,6 +199,7 @@ const Map = () => {
     };
 
     return (
+
         <div className="map-container">
             <div className="filters">
                 {["hostel", "restaurant", "bar", "cafe", "fast_food"].map((filter) => (
