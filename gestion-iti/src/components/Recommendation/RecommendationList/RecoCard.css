@@ -1,0 +1,10 @@
+.header-reco{
+    width:10px;
+    right: 0;
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 8px;
+    margin-left: 16px;
+    min-width: 100px;
+    text-align: center;
+}
