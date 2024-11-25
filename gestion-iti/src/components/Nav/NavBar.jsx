@@ -6,10 +6,10 @@ const NavBar = () => {
 
 
     return (
-        <div className={`nav-bar nav-bar-${colorMode}`}>
+        <div className={`nav-bar nav-bar`}>
             <Link href="/"><span className="nav-icon">🏠</span></Link>
             <Link href="/map"><span className="nav-icon">📌</span></Link>
-            <Link href="/contact"><span className="nav-icon">contact</span></Link>
+            <Link href="/contact"><span className="nav-icon">📞</span></Link>
             <Link href="/premium"><span className="nav-icon">👑</span></Link>
         </div>
     );
