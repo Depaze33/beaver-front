@@ -4,7 +4,6 @@ import RecoCard from "@/components/Recommendation/RecommendationList/RecoCard.js
 const RecommendationList = () => {
     return (
         <div>
-
         <RecoCard/>
         <RecoCard/>
         </div>
