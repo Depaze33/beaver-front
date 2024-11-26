@@ -1,40 +1,47 @@
 import { Card } from "@chakra-ui/react"
 import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import PropTypes from "prop-types";
 import './RecoCard.css'
-const RecoCard = () => {
+
+const RecoCard = ({img, title, distance, comment}) => {
+
     return (
-        <Card.Root>
-            <Card.Body gap="2">
-                <Avatar
-                    src="https://picsum.photos/200/300"
-                    name="Nue Camp"
-                    size="lg"
-                    shape="rounded"
-                />
-                <div className="distance">
-                    <div>Distance</div>
-                    <div>1234 m</div>
+
+
+        <div className="card">
+            <div className="card-principal">
+                <div className="card-img">
+                    <img src={img} alt={title} style={{width: '60%'}}/>
                 </div>
-                <Card.Title mt="2">Restaurant AFPA</Card.Title>
-                <Card.Description>
-                    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus error explicabo fugit,
-                        nesciunt nisi ullam veritatis. Accusantium blanditiis consectetur harum numquam optio provident,
-                        quaerat repellendus similique, temporibus, unde vel veritatis.
+
+                <div className="card-body">
+                    <div className="card-title">
+                        <h3>{title}</h3>
                     </div>
 
+                        <div className="card-comment">
+                            <p>{comment}</p>
+                        </div>
+                    <div className="card-distance">
 
-                </Card.Description>
+                        <span>Distance: {distance} m</span>
+                    </div>
+                    </div>
+            </div>
 
-
-            </Card.Body>
-            <Card.Footer justifyContent="flex-end">
+            <div className="card-footer" style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Button variant="outline">👍</Button>
-                <Button>👎</Button>
-            </Card.Footer>
-        </Card.Root>
+                {/*<Button>👎</Button>*/}
+            </div>
+        </div>
     )
 }
-
+RecoCard.propTypes = {
+    img: PropTypes.string,
+    title: PropTypes.string,
+    distance: PropTypes.number,
+    comment: PropTypes.string
+};
 
 export default RecoCard

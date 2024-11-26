@@ -36,7 +36,8 @@ const RecherchMarkers = ({ coords, filters }) => {
 
             // Construire la requête Overpass API en fonction des filtres sélectionnés
             const typesQuery = filters
-                .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});`)
+                .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});
+                                       nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`)
                 .join("");
 
             const query = `data=${encodeURIComponent(
@@ -68,7 +69,7 @@ const RecherchMarkers = ({ coords, filters }) => {
         };
 
         fetchLocations();
-    }, [coords, filters]);
+     }, [coords, filters]);
 
     const handleNoteChange = (locationId, note) => {
         setNotes((prevNotes) => ({

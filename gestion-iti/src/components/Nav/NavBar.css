@@ -1,5 +1,6 @@
 .nav-bar {
-    position: fixed;
+    position: sticky;
+    top: 0;
     bottom: 0; /* Fixe la barre en bas */
     left: 0;
     align-items: center;

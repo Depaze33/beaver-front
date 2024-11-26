@@ -7,10 +7,10 @@ import App from "./App"
 // import theme from './theme'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider>
             {/*<ColorModeScript initialColorMode={theme.config.initialColorMode} />*/}
             <App />
         </Provider>
-    </React.StrictMode>,
+    // </React.StrictMode>,
 )
