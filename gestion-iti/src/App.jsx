@@ -8,13 +8,10 @@ import './App.css';
 // import { ColorModeProvider } from "@/components/ui/color-mode"
 // import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
 
-
 function App() {
     return (
-
         <BrowserRouter>
             <TopBar/>
-
             <Routes>
                 <Route>
                     <Route path='/' element={<Recommendation/>} />
