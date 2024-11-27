@@ -1,0 +1,44 @@
+.leaflet-container{
+    width: 80%;
+}
+
+
+
+.map-container {
+    height: calc(100vh - 60px); /* Ajuste pour laisser de l'espace à la topbar */
+    margin-top: 60px; /* Correspond à la hauteur de la topbar */
+    gap: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 200px;
+    margin: 10px;
+}
+
+.filter-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 200px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+}
+
+.filter-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #d09e9e; /* Couleur de l'intérieur de la checkbox */
+}
+
+.filter-checkbox:checked {
+    outline: 2px solid #0056b3; /* Bordure autour de la checkbox si cochée */
+}
+
+.filter-label:hover {
+    color: #0056b3; /* Change la couleur du texte au survol */
+}

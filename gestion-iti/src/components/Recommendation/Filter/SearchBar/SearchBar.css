@@ -1,0 +1,16 @@
+.search-bar {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+.search-bar:focus {
+    border-color: #3182ce; /* Couleur de surbrillance */
+    outline: none;
+}
