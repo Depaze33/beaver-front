@@ -222,7 +222,9 @@ const Map = () => {
                         <Popup>Your position</Popup>
                     </Marker>
                 )}
-                {markerPosition && <RecherchMarkers coords={markerPosition} filters={filters} />}
+                {filters.length > 0 && markerPosition && (
+                    <RecherchMarkers coords={markerPosition} filters={filters} />
+                )}
                 <SearchControl onSearch={handleSearch} />
             </MapContainer>
         </div>
