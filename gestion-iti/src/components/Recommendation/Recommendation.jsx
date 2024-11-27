@@ -1,22 +1,25 @@
-import React, { useState } from "react";
-import FilterBar from "@/components/Div/Filter.jsx";
+import  {useState} from 'react'
+import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
-
+import Filters from "@/components/Div/Filter.jsx";
 const Recommendation = () => {
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe"]); // Filtres par défaut
+    const [filters, setFilters] = useState([]);
 
-    const handleFilterChange = (newFilters) => {
-        setFilters(newFilters);
-        console.log("Updated filters:", newFilters); // Débogage
+    const handleFilterChange = (filter) => {
+        setFilters((prevFilters) =>
+            prevFilters.includes(filter)
+                ? prevFilters.filter((f) => f !== filter) // Remove filter
+                : [...prevFilters, filter] // Add filter
+        );
     };
 
     return (
         <div>
-            <h1>Recommendations</h1>
-            <FilterBar filters={filters} onFilterChange={handleFilterChange} />
+            <Filters filters={filters} onFilterChange={handleFilterChange} />
+            <FilterBar />
             <RecommendationList filters={filters} />
         </div>
-    );
-};
 
-export default Recommendation;
+    )
+}
+export default Recommendation
