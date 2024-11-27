@@ -2,10 +2,9 @@
     width: 80%;
 }
 
-
-
 .map-container {
-    height: calc(100vh - 60px); /* Ajuste pour laisser de l'espace à la topbar */
+    /* height: calc(100vh - 60px); Ajuste pour laisser de l'espace à la topbar */
+    height: 300px;
     margin-top: 60px; /* Correspond à la hauteur de la topbar */
     gap: 100px;
     display: flex;
