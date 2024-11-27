@@ -21,7 +21,7 @@ const RecommendationList = () => {
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
                 }
-                console.log("hello word!")
+
                 const jsonResponse = await response.json();
                 setRecommandations(jsonResponse);
             } catch (err) {
@@ -33,13 +33,14 @@ const RecommendationList = () => {
 
         fetchRecommandation();
     }, []);
-//TODO retourner un jsx du composant
+
     return (
         <>
             {recommandations.map((reco)=>{
                 return <RecoCard
                     key={reco.id}
                     img="https://upload.wikimedia.org/wikipedia/commons/6/6b/American_Beaver.jpg"
+                    type={reco.location.locationType}
                     title={reco.location.name}
                     distance={40000}
                     comment={reco.comment}/>

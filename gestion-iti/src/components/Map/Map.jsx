@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import useGeoLocation from "../Hook/Hooks.jsx";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import useGeoLocation from "../Hook/Hooks.jsx";
+import Filters from '../Div/Filter.jsx'; // Import du composant Filters
 import L from "leaflet";
 
 // Icône rouge pour le marqueur
@@ -16,13 +17,46 @@ const redIcon = new L.Icon({
     shadowSize: [41, 41],
 });
 
+// Composant SearchControl pour la recherche géolocalisée
+const SearchControl = ({ onSearch }) => {
+    const map = useMap();
 
-// Composant RecherchMarkers avec filtres
+    useEffect(() => {
+        const provider = new OpenStreetMapProvider();
+        const searchControl = new GeoSearchControl({
+            provider: provider,
+            style: "button",
+            showMarker: true,
+            retainZoomLevel: false,
+            animateZoom: true,
+            autoClose: true,
+            searchLabel: "Enter address",
+            keepResult: true,
+        });
+
+        map.addControl(searchControl);
+
+        map.on("geosearch/showlocation", (result) => {
+            const { lat, lng } = result.location;
+            onSearch([lat, lng]);
+        });
+
+        return () => map.removeControl(searchControl);
+    }, [map, onSearch]);
+
+    return null;
+};
+
+SearchControl.propTypes = {
+    onSearch: PropTypes.func,
+};
+
+// Composant RecherchMarkers pour afficher les lieux filtrés
 const RecherchMarkers = ({ coords, filters }) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [notes, setNotes] = useState({}); // État pour les notes par ID de location
+    const [notes, setNotes] = useState({});
 
     useEffect(() => {
         if (!coords || filters.length === 0) return;
@@ -34,7 +68,6 @@ const RecherchMarkers = ({ coords, filters }) => {
             const [latitude, longitude] = coords;
             const radius = 5000; // Rayon de recherche en mètres
 
-            // Construire la requête Overpass API en fonction des filtres sélectionnés
             const typesQuery = filters
                 .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});
                                        nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`)
@@ -69,7 +102,7 @@ const RecherchMarkers = ({ coords, filters }) => {
         };
 
         fetchLocations();
-     }, [coords, filters]);
+    }, [coords, filters]);
 
     const handleNoteChange = (locationId, note) => {
         setNotes((prevNotes) => ({
@@ -120,47 +153,12 @@ const RecherchMarkers = ({ coords, filters }) => {
     );
 };
 
-
 RecherchMarkers.propTypes = {
     coords: PropTypes.arrayOf(PropTypes.number),
     filters: PropTypes.arrayOf(PropTypes.string),
 };
 
-// Composant SearchControl pour la recherche géolocalisée
-const SearchControl = ({ onSearch }) => {
-    const map = useMap();
-
-    useEffect(() => {
-        const provider = new OpenStreetMapProvider();
-        const searchControl = new GeoSearchControl({
-            provider: provider,
-            style: "button",
-            showMarker: true,
-            retainZoomLevel: false,
-            animateZoom: true,
-            autoClose: true,
-            searchLabel: "Enter address",
-            keepResult: true,
-        });
-
-        map.addControl(searchControl);
-
-        map.on("geosearch/showlocation", (result) => {
-            const { lat, lng } = result.location;
-            onSearch([lat, lng]);
-        });
-
-        return () => map.removeControl(searchControl);
-    }, [map, onSearch]);
-
-    return null;
-};
-
-SearchControl.propTypes = {
-    onSearch: PropTypes.func,
-};
-
-// Composant Map avec filtres pour les types de lieux
+// Composant principal Map
 const Map = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
@@ -171,6 +169,21 @@ const Map = () => {
             setMarkerPosition([coords.latitude, coords.longitude]);
         }
     }, [coords]);
+
+    const toggleFilter = (filter) => {
+        setFilters((prev) =>
+            prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+        );
+    };
+
+    const handleMarkerDragEnd = (event) => {
+        const { lat, lng } = event.target.getLatLng();
+        setMarkerPosition([lat, lng]);
+    };
+
+    const handleSearch = (newPosition) => {
+        setMarkerPosition(newPosition);
+    };
 
     if (!isGeolocationAvailable) {
         return <div>Your browser does not support Geolocation</div>;
@@ -184,37 +197,9 @@ const Map = () => {
         return <div>Getting your location&hellip;</div>;
     }
 
-    const handleMarkerDragEnd = (event) => {
-        const { lat, lng } = event.target.getLatLng();
-        setMarkerPosition([lat, lng]);
-    };
-
-    const handleSearch = (newPosition) => {
-        setMarkerPosition(newPosition);
-    };
-
-    const toggleFilter = (filter) => {
-        setFilters((prev) =>
-            prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
-        );
-    };
-
     return (
-
         <div className="map-container">
-            <div className="filters">
-                {["hostel", "restaurant", "bar", "cafe", "fast_food"].map((filter) => (
-                    <label key={filter} className="filter-label">
-                        <input
-                            type="checkbox"
-                            checked={filters.includes(filter)}
-                            onChange={() => toggleFilter(filter)}
-                            className="filter-checkbox"
-                        />
-                        {filter}
-                    </label>
-                ))}
-            </div>
+            <Filters filters={filters} onFilterChange={toggleFilter} />
             <MapContainer
                 center={markerPosition || [coords.latitude, coords.longitude]}
                 zoom={14}
