@@ -1,6 +1,7 @@
 import  {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
+
 const Recommendation = () => {
     const [filters, setFilters] = useState([]);
 

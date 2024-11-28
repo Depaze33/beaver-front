@@ -1,7 +1,16 @@
+.chakra-dialog__content{
+    width: 270px;
+    background-color: #d09e9e;
+}
+
+
 .filters {
     display: flex;
-    flex-direction: row;
-    background-color: #d09e9e;
+    flex-direction: column;
+
+    gap: 10px;
+    width: 200px;
+    font-size: large;
 }
 
 .filters input[type="checkbox"] {
@@ -12,10 +21,10 @@
 .filters label {
     cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
     padding: 5px 10px;
-    background-color: #ccc; /* Par défaut, grisé */
+    background-color: #d09e9e; /* Par défaut, grisé */
     border-radius: 5px;
     margin-right: 5px;
-    color: #666; /* Couleur du texte grisé */
+    color: black; /* Couleur du texte grisé */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -23,13 +32,8 @@
     background-color: #e4bebe; /* Effet au survol */
 }
 
-.filters input[type="checkbox"]:checked + label {
-    background-color: #a05757; /* Couleur active */
-    color: white; /* Texte actif */
+input .filter{
+    accent-color: rebeccapurple;
 }
 
-/* Ajoute une couleur plus fade pour les non sélectionnés */
-.filters input[type="checkbox"]:not(:checked) + label {
-    background-color: #ccc;
-    color: #666;
-}
+
