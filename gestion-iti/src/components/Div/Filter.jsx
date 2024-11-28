@@ -17,7 +17,7 @@ import './Filter.css'
 
 
 const Filters = ({ filters, onFilterChange }) => {
-    const filterOptions = ["hostel", "restaurant", "bar", "cafe", "fast_food"];
+    const filterOptions = ["hotel", "restaurant", "bar", "cafe", "fast_food"];
 
     return (
         <div className="filters">

@@ -212,7 +212,7 @@ RecherchMarkers.propTypes = {
 const Map = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe"]); // Filtres par défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel"]); // Filtres par défaut
 
     useEffect(() => {
         if (coords) {
