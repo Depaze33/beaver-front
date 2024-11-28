@@ -6,6 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import useGeoLocation from "../Hook/Hooks.jsx";
 import Filters from '../Div/Filter.jsx'; // Import du composant Filters
 import L from "leaflet";
+import './Map.css'
 
 // Icône rouge pour le marqueur de la position
 const redIcon = new L.Icon({
