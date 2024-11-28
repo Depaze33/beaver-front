@@ -14,12 +14,15 @@
 }
 
 .filters input[type="checkbox"] {
-    /* Masque la case à cocher */
+
     display: none;
 }
 
+.filter label.checked{
+    background-color: white;
+}
 .filters label {
-    cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
+    cursor: pointer;
     padding: 5px 10px;
    color: #1a202c;
     border-radius: 5px;
@@ -31,13 +34,23 @@
     background-color: #b19bcb; /* Effet au survol */
 }
 .filters label:active {
-    background-color: red; /* Effet au survol */
+    background-color: rebeccapurple;
+    color: white;
 }
-.filter-label{
-    accent-color: rebeccapurple;
+
+.button-apply{
+    color: #f7fafc;
+    background-color: rebeccapurple;
 }
-.filter-label:active {
-    color: red;
+
+.dialog-title{
+    color: rebeccapurple;
 }
+
+.filter-label.checked {
+
+    font-weight: bold;
+}
+
 
 

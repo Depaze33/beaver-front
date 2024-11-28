@@ -21,20 +21,27 @@ const Filters = ({ filters, onFilterChange }) => {
 
     return (
         <div className="filters">
-            {filterOptions.map((filter) => (
-                <label key={filter} className="filter-label">
-                    <input
-                        type="checkbox"
-                        checked={filters.includes(filter)}
-                        onChange={() => onFilterChange(filter)}
-                        className="filter-checkbox"
-                    />
-                    {filter}
-                </label>
-            ))}
+            {filterOptions.map((filter) => {
+                const isChecked = filters.includes(filter);
+                return (
+                    <label
+                        key={filter}
+                        className={`filter-label ${isChecked ? "checked" : ""}`}
+                    >
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => onFilterChange(filter)}
+                            className="filter-checkbox"
+                        />
+                        {filter}
+                    </label>
+                );
+            })}
         </div>
     );
 };
+
 
 Filters.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -52,18 +59,15 @@ const FiltersDialog = ({ filters, onFilterChange }) => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Filter Options</DialogTitle>
+                    <DialogTitle className="dialog-title">Filter Options</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
                     <Filters filters={filters} onFilterChange={onFilterChange} />
                 </DialogBody>
                 <DialogFooter>
                     <DialogActionTrigger asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button className="button-apply">Apply</Button>
                     </DialogActionTrigger>
-                    <DialogCloseTrigger>
-                        <Button>Apply</Button>
-                    </DialogCloseTrigger>
                 </DialogFooter>
             </DialogContent>
         </DialogRoot>
