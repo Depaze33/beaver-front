@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import SearchBar from "@/components/Recommendation/Filter/SearchBar/SearchBar.jsx";
 import { Button } from "@chakra-ui/react";
 import './FilterBar.css';
