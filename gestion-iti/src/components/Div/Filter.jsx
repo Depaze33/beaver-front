@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import './Filter.css';
 import { Button } from "@/components/ui/button";
 import {
     DialogActionTrigger,
@@ -12,55 +13,52 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import './Filter.css'
-const Filters = ({ filters, onFilterChange }) => {
-    const filterOptions = ["hostel", "restaurant", "bar", "cafe", "fast_food"];
 
-    return (
-        <div className="filters">
-            {filterOptions.map((filter) => (
-                <label key={filter} className="filter-label">
-                    <input
-                        type="checkbox"
-                        checked={filters.includes(filter)}
-                        onChange={() => onFilterChange(filter)}
-                        className="filter-checkbox"
-                    />
-                    {filter}
-                </label>
-            ))}
-        </div>
-    );
-};
-
-Filters.propTypes = {
-    filters: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onFilterChange: PropTypes.func.isRequired,
-};
+import { FaFilter } from "react-icons/fa";
 
 const FiltersDialog = ({ filters, onFilterChange }) => {
+    const filterOptions = ["hostel", "restaurant", "bar", "cafe", "fast_food"];
+
+    const handleCheckboxChange = (filter) => {
+        const newFilters = filters.includes(filter)
+            ? filters.filter((f) => f !== filter)
+            : [...filters, filter];
+        onFilterChange(newFilters);
+    };
+
     return (
         <DialogRoot>
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
-                    Open Filters
+                    <FaFilter />
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Filter Options</DialogTitle>
+                    <DialogTitle>Choose Filters</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
-                    <Filters filters={filters} onFilterChange={onFilterChange} />
+                    <div className="filters">
+                        {filterOptions.map((filter) => (
+                            <label key={filter} className="filter-label">
+                                <input
+                                    type="checkbox"
+                                    checked={filters.includes(filter)}
+                                    onChange={() => handleCheckboxChange(filter)}
+                                    className="filter-checkbox"
+                                />
+                                {filter}
+                            </label>
+                        ))}
+                    </div>
                 </DialogBody>
                 <DialogFooter>
                     <DialogActionTrigger asChild>
                         <Button variant="outline">Cancel</Button>
                     </DialogActionTrigger>
-                    <DialogCloseTrigger>
-                        <Button>Apply</Button>
-                    </DialogCloseTrigger>
+                    <Button>Save</Button>
                 </DialogFooter>
+                <DialogCloseTrigger />
             </DialogContent>
         </DialogRoot>
     );

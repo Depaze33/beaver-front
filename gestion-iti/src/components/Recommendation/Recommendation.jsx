@@ -1,7 +1,6 @@
 import  {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
-import Filters from "@/components/Div/Filter.jsx";
 const Recommendation = () => {
     const [filters, setFilters] = useState([]);
 
@@ -15,7 +14,7 @@ const Recommendation = () => {
 
     return (
         <div>
-            <Filters filters={filters} onFilterChange={handleFilterChange} />
+
             <FilterBar />
             <RecommendationList filters={filters} />
         </div>
