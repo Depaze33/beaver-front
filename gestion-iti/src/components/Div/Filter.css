@@ -1,0 +1,35 @@
+.filters {
+    display: flex;
+    flex-direction: row;
+    background-color: #d09e9e;
+}
+
+.filters input[type="checkbox"] {
+    /* Masque la case à cocher */
+    display: none;
+}
+
+.filters label {
+    cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
+    padding: 5px 10px;
+    background-color: #ccc; /* Par défaut, grisé */
+    border-radius: 5px;
+    margin-right: 5px;
+    color: #666; /* Couleur du texte grisé */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filters label:hover {
+    background-color: #e4bebe; /* Effet au survol */
+}
+
+.filters input[type="checkbox"]:checked + label {
+    background-color: #a05757; /* Couleur active */
+    color: white; /* Texte actif */
+}
+
+/* Ajoute une couleur plus fade pour les non sélectionnés */
+.filters input[type="checkbox"]:not(:checked) + label {
+    background-color: #ccc;
+    color: #666;
+}
