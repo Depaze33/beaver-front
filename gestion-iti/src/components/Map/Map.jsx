@@ -132,7 +132,24 @@ const RecherchMarkers = ({ coords, filters }) => {
                 setLoading(false);
             }
         };
+        const fetchWithDynamicRadius = async () => {
+            let radius = 5000; // Start with 5 km radius
+            let locations = [];
+            let attempt = 0;
 
+            while (locations.length > 50 && radius > 500 && attempt < 5) {
+                locations = await fetchLocations(radius);
+                attempt++;
+                if (locations.length > 50) {
+                    radius = Math.max(500, radius / 2); // Reduce radius but not below 500 meters
+                }
+            }
+
+            setLocations(locations);
+            setLoading(false);
+        };
+
+        fetchWithDynamicRadius();
         fetchLocations();
     }, [coords, filters]);
 
