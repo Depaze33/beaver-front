@@ -1,13 +1,10 @@
-import React from "react";
-import { Link} from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
 import "./NavBar.css";
-import { FaHome } from "react-icons/fa";
-import { FaMapMarkedAlt } from "react-icons/fa";
+import { FaHome, FaMapMarkedAlt } from "react-icons/fa";
 import { IoIosContacts } from "react-icons/io";
 import { FaCrown } from "react-icons/fa6";
 
 const NavBar = () => {
-
 
     return (
         <div className={`nav-bar nav-bar`}>

@@ -1,0 +1,15 @@
+.form{
+    display: flex;               /* Active Flexbox */
+    flex-direction: column;      /* Aligne les éléments verticalement */
+    align-items: center;         /* Centre les éléments horizontalement */
+    justify-content: center;     /* Centre les éléments verticalement */
+    height: 100vh;               /* Prend toute la hauteur de l'écran */
+}
+
+.input{
+    width: 500px;
+}
+
+.field{
+    margin-bottom: 20px;
+}
