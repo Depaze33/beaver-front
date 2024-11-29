@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
-import useGeoLocation from "../Hook/Hooks.jsx";
+import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 import Filters from '../Div/Filter.jsx'; // Import du composant Filters
 import L from "leaflet";
 import './Map.css'

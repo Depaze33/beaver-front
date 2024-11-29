@@ -3,7 +3,7 @@ import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
 const Recommendation = () => {
-    const [filters, setFilters] = useState([]);
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food"]); // Filtres par défaut
 
     const handleFilterChange = (filter) => {
         setFilters((prevFilters) =>
@@ -16,8 +16,8 @@ const Recommendation = () => {
     return (
         <div>
 
-            <FilterBar />
-            <RecommendationList filters={filters} />
+            <FilterBar filter={filters} onFilterChange={handleFilterChange} />
+            <RecommendationList filter={filters}  />
         </div>
 
     )
