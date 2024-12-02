@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import RecoCard from "@/components/Recommendation/RecommendationList/RecoCard.jsx";
+import PropTypes from "prop-types";
 
-const RecommendationList = () => {
+const RecommendationList = ({filters}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [notes, setNotes] = useState({});
@@ -33,10 +34,18 @@ const RecommendationList = () => {
 
         fetchRecommandation();
     }, []);
-
+// filter.prompt en filter en bd
+//     une fct js qui prend en entrée la chaine de caractère qui renvoie la coo en bdd
     return (
         <>
-            {recommandations.map((reco)=>{
+            {recommandations.filter((reco)=>{
+                 console.log(reco)
+                console.log(filters.includes[reco.location.locationType])
+                    return(
+                        filters.includes[reco.location.locationType]
+                    )})
+
+                .map((reco)=>{
                 return <RecoCard
                     key={reco.id}
                     img="https://upload.wikimedia.org/wikipedia/commons/6/6b/American_Beaver.jpg"
@@ -48,6 +57,9 @@ const RecommendationList = () => {
 
         </>
     );
+};
+RecommendationList.propTypes = {
+    filters: PropTypes.arrayOf(PropTypes.string),
 };
 
 

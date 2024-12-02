@@ -1,8 +1,9 @@
 import  {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
+import Filter from '@/components/Div/Filter.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
-const Recommendation = () => {
+const RecommendationPage = () => {
     const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food"]); // Filtres par défaut
 
     const handleFilterChange = (filter) => {
@@ -15,11 +16,11 @@ const Recommendation = () => {
 
     return (
         <div>
-
-            <FilterBar filter={filters} onFilterChange={handleFilterChange} />
-            <RecommendationList filter={filters}  />
+            <FilterBar/>
+            <Filter filters={filters} onFilterChange={handleFilterChange}  />
+            <RecommendationList filters={filters}  />
         </div>
 
     )
 }
-export default Recommendation
+export default RecommendationPage

@@ -2,11 +2,11 @@ import  { useState } from 'react';
 import SearchBar from "@/components/Recommendation/Filter/SearchBar/SearchBar.jsx";
 import { Button } from "@chakra-ui/react";
 import './FilterBar.css';
-import FilterDialog from '@/components/Div/Filter.jsx';  // Assuming Filter is the FiltersDialog component
+import Filter from "@/components/Div/Filter.jsx";  // Assuming Filter is the FiltersDialog component
 
 const FilterBar = () => {
     // State to hold the selected filters
-    const [filters, setFilters] = useState([]);
+    const [filters, setFilters] = useState(["hotel", "restaurant", "bar", "cafe", "fast_food"]);
 
     // Function to handle filter changes
     const handleFilterChange = (newFilters) => {
@@ -17,7 +17,7 @@ const FilterBar = () => {
         <div className="filter">
             <SearchBar />
             <Button ml={2}>🌍</Button>
-            <FilterDialog filters={filters} onFilterChange={handleFilterChange} />
+            <Filter filters={filters} onFilterChange={handleFilterChange} />
         </div>
     );
 }
