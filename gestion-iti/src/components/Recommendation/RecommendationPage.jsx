@@ -7,7 +7,7 @@ const RecommendationPage = () => {
     const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
     // défaut
 
-    const handleFilterChange = (filter) => {
+    const onFilterChange = (filter) => {
         setFilters((prevFilters) =>
             prevFilters.includes(filter)
                 ? prevFilters.filter((f) => f !== filter) // Remove filter
@@ -17,8 +17,7 @@ const RecommendationPage = () => {
 
     return (
         <div>
-            <FilterBar/>
-            <Filter filters={filters} onFilterChange={handleFilterChange}  />
+            <FilterBar filters={filters} onFilterChange={onFilterChange} />
             <RecommendationList filters={filters}  />
         </div>
 

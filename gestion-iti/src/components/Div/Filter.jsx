@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
     DialogActionTrigger,
     DialogBody,
@@ -12,11 +12,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { FaFilter } from "react-icons/fa";
+import {FaFilter} from "react-icons/fa";
 import './Filter.css'
 
 
-const Filters = ({ filters, onFilterChange }) => {
+const Filter = ({filters, onFilterChange}) => {
     const filterOptions = ["hotel", "restaurant", "bar", "cafe", "fast_food", "loisir"];
 
     return (
@@ -43,18 +43,17 @@ const Filters = ({ filters, onFilterChange }) => {
 };
 
 
-Filters.propTypes = {
+Filter.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
     onFilterChange: PropTypes.func.isRequired,
 };
 
-const FiltersDialog = ({ filters, onFilterChange }) => {
+const FiltersDialog = ({filters, onFilterChange}) => {
     return (
         <DialogRoot>
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
-                    <FaFilter />
-
+                    <FaFilter/>
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -62,7 +61,7 @@ const FiltersDialog = ({ filters, onFilterChange }) => {
                     <DialogTitle className="dialog-title">Filter Options</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
-                    <Filters filters={filters} onFilterChange={onFilterChange} />
+                    <Filter filters={filters} onFilterChange={onFilterChange}/>
                 </DialogBody>
                 <DialogFooter>
                     <DialogActionTrigger asChild>
