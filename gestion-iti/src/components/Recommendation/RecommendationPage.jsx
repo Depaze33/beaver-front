@@ -1,6 +1,5 @@
 import  {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
-import Filter from '@/components/Div/Filter.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
 const RecommendationPage = () => {
