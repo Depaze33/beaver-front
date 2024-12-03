@@ -4,7 +4,8 @@ import Filter from '@/components/Div/Filter.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
 const RecommendationPage = () => {
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food"]); // Filtres par défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
+    // défaut
 
     const handleFilterChange = (filter) => {
         setFilters((prevFilters) =>

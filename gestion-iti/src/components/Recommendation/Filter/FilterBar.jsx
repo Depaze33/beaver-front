@@ -6,7 +6,7 @@ import Filter from "@/components/Div/Filter.jsx";  // Assuming Filter is the Fil
 
 const FilterBar = () => {
     // State to hold the selected filters
-    const [filters, setFilters] = useState(["hotel", "restaurant", "bar", "cafe", "fast_food"]);
+    const [filters, setFilters] = useState(["hotel", "restaurant", "bar", "cafe", "fast_food", "loisir"]);
 
     // Function to handle filter changes
     const handleFilterChange = (newFilters) => {

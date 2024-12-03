@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Map from './components/Map/Map.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TopBar from "@/components/Nav/TopBar.jsx";
