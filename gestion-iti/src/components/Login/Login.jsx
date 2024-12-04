@@ -47,7 +47,7 @@ function Login() {
                 console.log("Fetched data:", data);
                 localStorage.setItem('token', data.token);
                 setData(data);      // Store the list of clients in the state
-                navigate('/allaccounts'); // Redirect to the dashboard on successful login
+                navigate('/'); // Redirect to the dashboard on successful login
             })
             .catch((error) => {
                 setError(error);     // Store the error in the state

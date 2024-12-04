@@ -47,7 +47,7 @@ function Signup() {
             })
             .then((data) => {
                 console.log("Fetched data:", data);
-                navigate('/'); // Redirect to the dashboard on successful login
+                navigate('/login'); // Redirect to the dashboard on successful login
             })
             .catch((error) => {
                 setError(error);     // Store the error in the state
