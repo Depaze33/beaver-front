@@ -5,8 +5,10 @@ import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 import Filters from '../Div/Filter.jsx'; // Import du composant Filters
+import CreateRecommendation from "@/components/RecomandationCreation/CreateRecommendation.jsx";
 import L from "leaflet";
 import './Map.css'
+
 
 // Icône rouge pour le marqueur de la position
 const redIcon = new L.Icon({
@@ -88,7 +90,6 @@ const RecherchMarkers = ({ coords, filters }) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [notes, setNotes] = useState({});
 
     useEffect(() => {
         if (!coords || filters.length === 0) return;
@@ -109,7 +110,9 @@ const RecherchMarkers = ({ coords, filters }) => {
                 `[out:json];
         (${typesQuery});
         out geom;`
-            )}`;
+            )}`
+
+           ;
 
             try {
                 const response = await fetch(`https://overpass-api.de/api/interpreter`, {
@@ -152,14 +155,6 @@ const RecherchMarkers = ({ coords, filters }) => {
         fetchWithDynamicRadius();
         fetchLocations();
     }, [coords, filters]);
-
-    const handleNoteChange = (locationId, note) => {
-        setNotes((prevNotes) => ({
-            ...prevNotes,
-            [locationId]: note,
-        }));
-    };
-
     if (loading) return <div>Loading locations...</div>;
     if (error) return <div>{error}</div>;
 
@@ -176,26 +171,7 @@ const RecherchMarkers = ({ coords, filters }) => {
                         <br />
                         Type: {location.tags?.cuisine || location.tags?.tourism || "Unknown"}
                         <br />
-                        <div>
-                            <p>Rate this place:</p>
-                            <div style={{ display: "flex", gap: "5px" }}>
-                                {["👍", "😐", "👎"].map((emoji) => (
-                                    <button
-                                        key={emoji}
-                                        onClick={() => handleNoteChange(location.id, emoji)}
-                                        style={{
-                                            fontSize: "1.5rem",
-                                            background: notes[location.id] === emoji ? "#ddd" : "transparent",
-                                            border: "none",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        {emoji}
-                                    </button>
-                                ))}
-                            </div>
-                            {notes[location.id] && <p>Note: {notes[location.id]}</p>}
-                        </div>
+                        <CreateRecommendation/>
                     </Popup>
                 </Marker>
             ))}

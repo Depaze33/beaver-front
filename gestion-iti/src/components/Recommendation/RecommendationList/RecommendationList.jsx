@@ -18,7 +18,28 @@ const RecommendationList = ({ filters }) => {
         };
         return mapping[frontValue.toLowerCase()] || null;
     };
+    useEffect(() => {
+        const fetchLocation = async () => {
+            setLoading(true);
+            setError(null);
 
+            try {
+                const response = await fetch(`http://localhost:8000/api/locations`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+                }
+
+                const jsonResponse = await response.json();
+                setRecommandations(jsonResponse);
+            } catch (err) {
+                setError("Could not fetch locations. Please try again later. " + err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLocation();
+    }, []);
     useEffect(() => {
         const fetchRecommandation = async () => {
             setLoading(true);
@@ -33,7 +54,7 @@ const RecommendationList = ({ filters }) => {
                 const jsonResponse = await response.json();
                 setRecommandations(jsonResponse);
             } catch (err) {
-                setError("Could not fetch locations. Please try again later. " + err);
+                setError("Could not fetch locations. Please try again later. " + err.message);
             } finally {
                 setLoading(false);
             }
@@ -50,18 +71,23 @@ const RecommendationList = ({ filters }) => {
             {error && <p>{error}</p>}
             {recommandations
                 .filter((reco) => {
-                    // Vérifiez si le type de location est dans les filtres mappés
-                    return databaseFilters.includes(reco.location.locationType);
+                    // Vérifiez si location existe et a un locationType correspondant
+                    return (
+                        reco.location &&
+                        reco.location.locationType &&
+                        databaseFilters.includes(reco.location.locationType)
+                    );
                 })
                 .map((reco) => {
+                    const location = reco.location || {}; // Défaut à un objet vide si location est null
                     return (
                         <RecoCard
                             key={reco.id}
                             img="https://upload.wikimedia.org/wikipedia/commons/6/6b/American_Beaver.jpg"
-                            type={reco.location.locationType}
-                            title={reco.location.name}
+                            type={location.locationType || "Type inconnu"}
+                            title={location.name || "Nom inconnu"}
                             distance={40000}
-                            comment={reco.comment}
+                            comment={reco.comment || "Aucun commentaire"}
                         />
                     );
                 })}
