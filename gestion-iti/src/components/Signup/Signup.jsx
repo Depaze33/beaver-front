@@ -19,13 +19,13 @@ function Signup() {
         cguChecked: false,
     });
     const [validationErrors, setValidationErrors] = useState({});
+    const [emailExists, setEmailExists] = useState(false); // Nouvel état pour vérifier si l'email existe
     const navigate = useNavigate();
 
     const regexValidations = {
         email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        name: /^[a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*(?: [a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*)*$/
-,
+        name: /^[a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*(?: [a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*)*$/,
     };
 
     const isFormValid = () => {
@@ -85,8 +85,41 @@ function Signup() {
         setFormData({ ...formData, cguChecked: e.target.checked });
     };
 
-    const signUpButtonClick = () => {
+    // Fonction pour vérifier si l'email est déjà pris
+    const checkEmailAvailability = (email) => {
+        return fetch('http://localhost:8000/auth/check-email', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.exists) {
+                setError("L'email est déjà utilisé.");
+                return true; // Email déjà pris
+            }
+            return false; // Email disponible
+        })
+        .catch(() => {
+            setError("Erreur lors de la vérification de l'email.");
+            return false; // En cas d'erreur, considérer l'email comme disponible
+        });
+    };
+
+    // Fonction appelée lors du clic sur le bouton d'inscription
+    const signUpButtonClick = async () => {
         if (!isFormValid()) return;
+
+        // Vérification si l'email est déjà utilisé
+        const emailTaken = await checkEmailAvailability(formData.email);
+        if (emailTaken) {
+            setEmailExists(true);
+            return; // L'email est déjà utilisé, on arrête l'inscription
+        }
+
+        setEmailExists(false); // Réinitialisation si l'email est disponible
 
         const API_URL = 'http://localhost:8000/auth/signup';
 
@@ -104,18 +137,18 @@ function Signup() {
                 "Content-Type": "application/json",
             },
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`Erreur : ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(() => {
-                navigate('/login');
-            })
-            .catch((error) => {
-                setError(error);
-            });
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Erreur : ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(() => {
+            navigate('/login');
+        })
+        .catch((error) => {
+            setError("Erreur: L'email renseigné existe déjà !");
+        });
     };
 
     return (
@@ -160,6 +193,9 @@ function Signup() {
                     {validationErrors.email && (
                         <p className={styles.error}>{validationErrors.email}</p>
                     )}
+                    {emailExists && (
+                        <p className={styles.error}>Cet email est déjà utilisé.</p>
+                    )}
                 </Field>
             </div>
             <div>
@@ -181,7 +217,7 @@ function Signup() {
                     isChecked={formData.cguChecked}
                     onChange={handleCheckboxChange}
                 >
-                    j&apos;accepte les {" "}
+                    J&apos;accepte les {" "}
                     <Link colorPalette="teal" href="https://google.com" isExternal>
                         CGU *
                     </Link>
@@ -194,7 +230,10 @@ function Signup() {
             >
                 Inscription
             </Button>
-            {error && <p className={styles.error}>Erreur : {error.message}</p>}
+
+            {/* Affichage de l'erreur sous le bouton */}
+            {error && <p className={styles.error}>{error}</p>}
+
             <p className={styles.loginPrompt}>
                 Déjà inscrit ?{" "}
                 <Link
