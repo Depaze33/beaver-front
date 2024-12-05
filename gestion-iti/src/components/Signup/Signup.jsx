@@ -128,10 +128,11 @@ function Signup() {
                 <Checkbox
                     isChecked={formData.cguChecked}
                     onChange={handleCheckboxChange}
+                    
                 >
                     j&apos;accepte les {" "}
                     <Link colorPalette="teal" href="https://google.com" isExternal>
-                        CGU
+                        CGU *
                     </Link>
                 </Checkbox>
             </div>
