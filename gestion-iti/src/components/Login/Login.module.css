@@ -1,8 +1,8 @@
 .form{
-    display: flex;               /* Active Flexbox */
-    flex-direction: column;      /* Aligne les éléments verticalement */
-    align-items: center;         /* Centre les éléments horizontalement */
-    justify-content: center;     /* Centre les éléments verticalement */
+    display: flex;               
+    flex-direction: column;      
+    align-items: center;         
+    justify-content: center;     
     height: 100vh;               /* Prend toute la hauteur de l'écran */
 }
 
@@ -12,4 +12,12 @@
 
 .field{
     margin-bottom: 20px;
+}
+
+.activeButton {
+    background-color: #4caf50; 
+    color: white; 
+    cursor: pointer; 
+    border: none; 
+    transition: background-color 0.3s ease; /* Animation de transition */
 }

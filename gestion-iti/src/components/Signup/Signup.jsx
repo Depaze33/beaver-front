@@ -1,32 +1,56 @@
 import "../../App.css";
 import styles from './Signup.module.css';
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import { Input, Button } from "@chakra-ui/react"
-import { Field } from "@/components/ui/field"
-import { PasswordInput } from "@/components/ui/password-input"
+import { Input, Button, Link } from "@chakra-ui/react";
+import { Field } from "@/components/ui/field";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function Signup() {
-
-    const [error, setError] = useState(null);     // For managing errors
-
-    const inputEmail = useRef(null);
-    const inputPassword = useRef(null);
-    const inputLastName = useRef(null);
-    const inputFirstName = useRef(null);
+    const [error, setError] = useState(null);          // For managing errors
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        lastName: "",
+        firstName: "",
+        cguChecked: false,
+    }); // For managing form inputs and checkbox state
 
     const navigate = useNavigate(); // Hook to manage navigation
 
+    const isFormValid = () => {
+        const { email, password, lastName, firstName, cguChecked } = formData;
+        return (
+            email.trim() !== "" &&
+            password.trim() !== "" &&
+            lastName.trim() !== "" &&
+            firstName.trim() !== "" &&
+            cguChecked
+        );
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleCheckboxChange = (e) => {
+        setFormData({ ...formData, cguChecked: e.target.checked });
+    };
+
     const signUpButtonClick = () => {
+        if (!isFormValid()) return;
+
         const API_URL = 'http://localhost:8000/auth/signup';
 
         const requestBody = {
-            "email": inputEmail.current.value,
-            "password": inputPassword.current.value,
-            "lastName": inputLastName.current.value,
-            "firstName": inputFirstName.current.value
+            email: formData.email,
+            password: formData.password,
+            lastName: formData.lastName,
+            firstName: formData.firstName,
         };
 
         fetch(API_URL,
@@ -35,7 +59,6 @@ function Signup() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
                 }
             })
             .then((response) => {
@@ -50,37 +73,89 @@ function Signup() {
                 navigate('/login'); // Redirect to the dashboard on successful login
             })
             .catch((error) => {
-                setError(error);     // Store the error in the state
+                setError(error); // Store the error in the state
                 console.log(error);
             });
-    }
+    };
+
     return (
         <div className={styles.form}>
             <div>
                 <Field className={styles.field} label="Nom de famille" required>
-                    <Input className={styles.input} ref={inputLastName} placeholder="Dupont" />
+                    <Input
+                        className={styles.input}
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        placeholder="Dupont"
+                    />
                 </Field>
             </div>
             <div>
                 <Field className={styles.field} label="Prénom" required>
-                    <Input className={styles.input} ref={inputFirstName} placeholder="Michel" />
+                    <Input
+                        className={styles.input}
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        placeholder="Michel"
+                    />
                 </Field>
             </div>
             <div>
                 <Field className={styles.field} label="Email" required>
-                    <Input className={styles.input} ref={inputEmail} placeholder="exemple@mail.com" />
+                    <Input
+                        className={styles.input}
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="exemple@mail.com"
+                    />
                 </Field>
             </div>
             <div>
                 <Field className={styles.field} label="Mot de passe" required>
-                    <PasswordInput className={styles.input} ref={inputPassword} placeholder="Azerty*123" />
+                    <PasswordInput
+                        className={styles.input}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Azerty*123"
+                    />
                 </Field>
             </div>
-            <Button onClick={signUpButtonClick}>Inscription</Button>
+            <div>
+                <Checkbox
+                    isChecked={formData.cguChecked}
+                    onChange={handleCheckboxChange}
+                >
+                    j&apos;accepte les {" "}
+                    <Link colorPalette="teal" href="https://google.com" isExternal>
+                        CGU
+                    </Link>
+                </Checkbox>
+            </div>
+            <Button
+                onClick={signUpButtonClick}
+                isDisabled={!isFormValid()}
+                className={!isFormValid() ? styles.disabledButton : styles.activeButton}
+            >
+                Inscription
+            </Button>
             {error && <p className={styles.error}>Erreur : {error.message}</p>}
+            <p className={styles.loginPrompt}>
+                Déjà inscrit ?{" "}
+                <Link
+                    onClick={() => navigate('/login')}
+                    color="teal.500"
+                    fontWeight="bold"
+                    _hover={{ textDecoration: "underline" }}
+                >
+                    Vous connecter !
+                </Link>
+            </p>
         </div>
-
-    )
+    );
 }
 
 export default Signup;
