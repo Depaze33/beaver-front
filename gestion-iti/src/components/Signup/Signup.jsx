@@ -10,31 +10,75 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 function Signup() {
-    const [error, setError] = useState(null);          // For managing errors
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
         lastName: "",
         firstName: "",
         cguChecked: false,
-    }); // For managing form inputs and checkbox state
+    });
+    const [validationErrors, setValidationErrors] = useState({});
+    const navigate = useNavigate();
 
-    const navigate = useNavigate(); // Hook to manage navigation
+    const regexValidations = {
+        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        name: /^[a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*(?: [a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*)*$/
+,
+    };
 
     const isFormValid = () => {
         const { email, password, lastName, firstName, cguChecked } = formData;
         return (
             email.trim() !== "" &&
+            regexValidations.email.test(email) &&
             password.trim() !== "" &&
+            regexValidations.password.test(password) &&
             lastName.trim() !== "" &&
+            regexValidations.name.test(lastName) &&
             firstName.trim() !== "" &&
+            regexValidations.name.test(firstName) &&
             cguChecked
         );
+    };
+
+    const validateField = (name, value) => {
+        let error = null;
+
+        switch (name) {
+            case "email":
+                if (!regexValidations.email.test(value)) {
+                    error = "Email invalide";
+                }
+                break;
+            case "password":
+                if (!regexValidations.password.test(value)) {
+                    error = (
+                        <>
+                            Le mot de passe doit contenir au moins 8 caractères, une majuscule,<br />
+                            une minuscule, un chiffre et un caractère spécial.
+                        </>
+                    );
+                }
+                break;
+            case "lastName":
+            case "firstName":
+                if (!regexValidations.name.test(value)) {
+                    error = "Ce champ ne peut contenir que des lettres et des espaces.";
+                }
+                break;
+            default:
+                break;
+        }
+
+        setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        validateField(name, value);
     };
 
     const handleCheckboxChange = (e) => {
@@ -53,28 +97,24 @@ function Signup() {
             firstName: formData.firstName,
         };
 
-        fetch(API_URL,
-            {
-                body: JSON.stringify(requestBody),
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
+        fetch(API_URL, {
+            body: JSON.stringify(requestBody),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
             .then((response) => {
-                if (!response.ok) { // Check if response is OK
+                if (!response.ok) {
                     throw new Error(`Erreur : ${response.status}`);
                 }
-
                 return response.json();
             })
-            .then((data) => {
-                console.log("Fetched data:", data);
-                navigate('/login'); // Redirect to the dashboard on successful login
+            .then(() => {
+                navigate('/login');
             })
             .catch((error) => {
-                setError(error); // Store the error in the state
-                console.log(error);
+                setError(error);
             });
     };
 
@@ -89,6 +129,9 @@ function Signup() {
                         onChange={handleInputChange}
                         placeholder="Dupont"
                     />
+                    {validationErrors.lastName && (
+                        <p className={styles.error}>{validationErrors.lastName}</p>
+                    )}
                 </Field>
             </div>
             <div>
@@ -100,6 +143,9 @@ function Signup() {
                         onChange={handleInputChange}
                         placeholder="Michel"
                     />
+                    {validationErrors.firstName && (
+                        <p className={styles.error}>{validationErrors.firstName}</p>
+                    )}
                 </Field>
             </div>
             <div>
@@ -111,6 +157,9 @@ function Signup() {
                         onChange={handleInputChange}
                         placeholder="exemple@mail.com"
                     />
+                    {validationErrors.email && (
+                        <p className={styles.error}>{validationErrors.email}</p>
+                    )}
                 </Field>
             </div>
             <div>
@@ -122,13 +171,15 @@ function Signup() {
                         onChange={handleInputChange}
                         placeholder="Azerty*123"
                     />
+                    {validationErrors.password && (
+                        <p className={styles.error}>{validationErrors.password}</p>
+                    )}
                 </Field>
             </div>
             <div>
                 <Checkbox
                     isChecked={formData.cguChecked}
                     onChange={handleCheckboxChange}
-                    
                 >
                     j&apos;accepte les {" "}
                     <Link colorPalette="teal" href="https://google.com" isExternal>
@@ -152,7 +203,7 @@ function Signup() {
                     fontWeight="bold"
                     _hover={{ textDecoration: "underline" }}
                 >
-                    Vous connecter !
+                    Connectez vous !
                 </Link>
             </p>
         </div>

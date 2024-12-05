@@ -102,7 +102,7 @@ function Login() {
                     fontWeight="bold"
                     _hover={{ textDecoration: "underline" }}
                 >
-                    Créer un compte
+                    Créer un compte !
                 </Link>
             </p>
         </div>
