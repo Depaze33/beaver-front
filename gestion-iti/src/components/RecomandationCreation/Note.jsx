@@ -40,7 +40,7 @@ Note.propTypes = {
     locationId: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-    ]).isRequired, // locationId doit être une chaîne ou un nombre
+    ]), // locationId doit être une chaîne ou un nombre
 };
 
 export default Note;

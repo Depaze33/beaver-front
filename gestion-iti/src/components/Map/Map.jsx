@@ -103,9 +103,10 @@ const RecherchMarkers = ({ coords, filters }) => {
 
             const typesQuery = filters
                 .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});
-                                       nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`)
-                .join(" ");
+                                       nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`
+            )
 
+                .join(" ");
             const query = `data=${encodeURIComponent(
                 `[out:json];
         (${typesQuery});
@@ -157,8 +158,9 @@ const RecherchMarkers = ({ coords, filters }) => {
     }, [coords, filters]);
     if (loading) return <div>Loading locations...</div>;
     if (error) return <div>{error}</div>;
-
+console.log(locations)
     return (
+        //data attribute
         <>
             {locations.map((location) => (
                 <Marker
@@ -171,7 +173,7 @@ const RecherchMarkers = ({ coords, filters }) => {
                         <br />
                         Type: {location.tags?.cuisine || location.tags?.tourism || "Unknown"}
                         <br />
-                        <CreateRecommendation/>
+                        <CreateRecommendation location={location}/>
                     </Popup>
                 </Marker>
             ))}
@@ -188,7 +190,8 @@ RecherchMarkers.propTypes = {
 const Map = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food"]); // Filtres par défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
+    // défaut
 
     useEffect(() => {
         if (coords) {

@@ -18,28 +18,7 @@ const RecommendationList = ({ filters }) => {
         };
         return mapping[frontValue.toLowerCase()] || null;
     };
-    useEffect(() => {
-        const fetchLocation = async () => {
-            setLoading(true);
-            setError(null);
 
-            try {
-                const response = await fetch(`http://localhost:8000/api/locations`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-                }
-
-                const jsonResponse = await response.json();
-                setRecommandations(jsonResponse);
-            } catch (err) {
-                setError("Could not fetch locations. Please try again later. " + err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLocation();
-    }, []);
     useEffect(() => {
         const fetchRecommandation = async () => {
             setLoading(true);
