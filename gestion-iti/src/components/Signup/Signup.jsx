@@ -179,6 +179,35 @@ function Signup() {
             });
     };
 
+    // Fonction pour transformer les \n en balises <br /> et le texte entre ** en couleur teal et en gras
+    const formatCguText = (text) => {
+        // Diviser le texte par lignes
+        const lines = text.split('\n');
+
+        return lines.map((line, index) => {
+            // Remplacer les **par texte** par du texte en couleur teal et en gras
+            const formattedLine = line.split('**').map((part, i) => {
+                if (i % 2 !== 0) {
+                    // Si c'est un texte entre **, l'appliquer en couleur teal et en gras
+                    return (
+                        <span key={i} style={{ color: 'teal', fontWeight: 'bold' }}>
+                            {part}
+                        </span>
+                    );
+                }
+                return part; // Sinon, juste retourner la partie sans modification
+            });
+
+            return (
+                <span key={index}>
+                    {formattedLine}
+                    <br /> {/* Ajoute un saut de ligne après chaque ligne */}
+                </span>
+            );
+        });
+    };
+
+
     return (
         <div className={styles.form}>
             <div>
@@ -273,7 +302,7 @@ function Signup() {
                             <DialogCloseTrigger />
                             <DialogBody>
                                 {cguText ? (
-                                    <div>{cguText}</div> // Affichage des CGU récupérées
+                                    <div>{formatCguText(cguText)}</div> // Affichage des CGU récupérées
                                 ) : (
                                     <p>Chargement des CGU...</p>
                                 )}
