@@ -16,20 +16,22 @@ function Signup() {
         password: "",
         lastName: "",
         firstName: "",
+        pseudo: "", 
         cguChecked: false,
     });
     const [validationErrors, setValidationErrors] = useState({});
-    const [emailExists, setEmailExists] = useState(false); // Nouvel état pour vérifier si l'email existe
+    const [emailExists, setEmailExists] = useState(false);
     const navigate = useNavigate();
 
     const regexValidations = {
         email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         name: /^[a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*(?: [a-zA-ZÀ-ÿ]+(?:[-']?[a-zA-ZÀ-ÿ]+)*)*$/,
+        pseudo: /^[a-zA-Z0-9]+$/,
     };
 
     const isFormValid = () => {
-        const { email, password, lastName, firstName, cguChecked } = formData;
+        const { email, password, lastName, firstName, pseudo, cguChecked } = formData;
         return (
             email.trim() !== "" &&
             regexValidations.email.test(email) &&
@@ -39,6 +41,7 @@ function Signup() {
             regexValidations.name.test(lastName) &&
             firstName.trim() !== "" &&
             regexValidations.name.test(firstName) &&
+            (pseudo.trim() === "" || regexValidations.pseudo.test(pseudo)) &&
             cguChecked
         );
     };
@@ -68,6 +71,11 @@ function Signup() {
                     error = "Ce champ ne peut contenir que des lettres et des espaces.";
                 }
                 break;
+            case "pseudo": 
+                if (value.trim() !== "" && !regexValidations.pseudo.test(value)) {
+                    error = "Le pseudo ne peut contenir que des lettres et des chiffres.";
+                }
+                break;
             default:
                 break;
         }
@@ -85,7 +93,6 @@ function Signup() {
         setFormData({ ...formData, cguChecked: e.target.checked });
     };
 
-    // Fonction pour vérifier si l'email est déjà pris
     const checkEmailAvailability = (email) => {
         return fetch('http://localhost:8000/auth/check-email', {
             method: "POST",
@@ -98,28 +105,26 @@ function Signup() {
         .then((data) => {
             if (data.exists) {
                 setError("L'email est déjà utilisé.");
-                return true; // Email déjà pris
+                return true;
             }
-            return false; // Email disponible
+            return false;
         })
         .catch(() => {
             setError("Erreur lors de la vérification de l'email.");
-            return false; // En cas d'erreur, considérer l'email comme disponible
+            return false;
         });
     };
 
-    // Fonction appelée lors du clic sur le bouton d'inscription
     const signUpButtonClick = async () => {
         if (!isFormValid()) return;
 
-        // Vérification si l'email est déjà utilisé
         const emailTaken = await checkEmailAvailability(formData.email);
         if (emailTaken) {
             setEmailExists(true);
-            return; // L'email est déjà utilisé, on arrête l'inscription
+            return;
         }
 
-        setEmailExists(false); // Réinitialisation si l'email est disponible
+        setEmailExists(false);
 
         const API_URL = 'http://localhost:8000/auth/signup';
 
@@ -128,6 +133,7 @@ function Signup() {
             password: formData.password,
             lastName: formData.lastName,
             firstName: formData.firstName,
+            pseudo: formData.pseudo || undefined,
         };
 
         fetch(API_URL, {
@@ -182,6 +188,20 @@ function Signup() {
                 </Field>
             </div>
             <div>
+                <Field className={styles.field} label="Pseudo" optional>
+                    <Input
+                        className={styles.input}
+                        name="pseudo"
+                        value={formData.pseudo}
+                        onChange={handleInputChange}
+                        placeholder="Pseudo123"
+                    />
+                    {validationErrors.pseudo && (
+                        <p className={styles.error}>{validationErrors.pseudo}</p>
+                    )}
+                </Field>
+            </div>
+            <div>
                 <Field className={styles.field} label="Email" required>
                     <Input
                         className={styles.input}
@@ -231,7 +251,6 @@ function Signup() {
                 Inscription
             </Button>
 
-            {/* Affichage de l'erreur sous le bouton */}
             {error && <p className={styles.error}>{error}</p>}
 
             <p className={styles.loginPrompt}>

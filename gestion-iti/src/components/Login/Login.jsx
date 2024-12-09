@@ -95,7 +95,7 @@ function Login() {
             </Button>
             {error && <p className={styles.error}>Erreur : {error.message}</p>}
             <p className={styles.signupPrompt}>
-                Pas encore de compte ?{" "}
+                Pas encore inscrit ?{" "}
                 <Link
                     onClick={() => navigate('/signup')}
                     color="teal.500"
