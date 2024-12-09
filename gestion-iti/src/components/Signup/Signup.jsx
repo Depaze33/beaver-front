@@ -1,13 +1,20 @@
 import "../../App.css";
 import styles from './Signup.module.css';
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-
 import { Input, Button, Link } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+    DialogBody,
+    DialogCloseTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogRoot,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 function Signup() {
     const [error, setError] = useState(null);
@@ -16,12 +23,27 @@ function Signup() {
         password: "",
         lastName: "",
         firstName: "",
-        pseudo: "", 
+        pseudo: "",
         cguChecked: false,
     });
     const [validationErrors, setValidationErrors] = useState({});
     const [emailExists, setEmailExists] = useState(false);
+    const [cguText, setCguText] = useState("");  // État pour stocker le texte des CGU
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Appel de l'API pour récupérer les CGU
+        fetch("http://localhost:8000/api/cgu/6756a9b954680b52e9e9496a")  // Remplacez par l'URL de votre API
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                setCguText(data); // Récupère le texte des CGU
+            })
+            .catch(error => {
+                console.error("Erreur lors de la récupération des CGU", error);
+                setError("Impossible de charger les CGU.");
+            });
+    }, []);
 
     const regexValidations = {
         email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -71,7 +93,7 @@ function Signup() {
                     error = "Ce champ ne peut contenir que des lettres et des espaces.";
                 }
                 break;
-            case "pseudo": 
+            case "pseudo":
                 if (value.trim() !== "" && !regexValidations.pseudo.test(value)) {
                     error = "Le pseudo ne peut contenir que des lettres et des chiffres.";
                 }
@@ -101,18 +123,18 @@ function Signup() {
             },
             body: JSON.stringify({ email })
         })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.exists) {
-                setError("L'email est déjà utilisé.");
-                return true;
-            }
-            return false;
-        })
-        .catch(() => {
-            setError("Erreur lors de la vérification de l'email.");
-            return false;
-        });
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.exists) {
+                    setError("L'email est déjà utilisé.");
+                    return true;
+                }
+                return false;
+            })
+            .catch(() => {
+                setError("Erreur lors de la vérification de l'email.");
+                return false;
+            });
     };
 
     const signUpButtonClick = async () => {
@@ -143,18 +165,18 @@ function Signup() {
                 "Content-Type": "application/json",
             },
         })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Erreur : ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(() => {
-            navigate('/login');
-        })
-        .catch((error) => {
-            setError("Erreur: L'email renseigné existe déjà !");
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Erreur : ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(() => {
+                navigate('/login');
+            })
+            .catch((error) => {
+                setError("Erreur: L'email renseigné existe déjà !");
+            });
     };
 
     return (
@@ -238,9 +260,26 @@ function Signup() {
                     onChange={handleCheckboxChange}
                 >
                     J&apos;accepte les {" "}
-                    <Link colorPalette="teal" href="https://google.com" isExternal>
-                        CGU *
-                    </Link>
+                    <DialogRoot scrollBehavior="inside" size="sm">
+                        <DialogTrigger asChild>
+                            <Link colorPalette="teal">
+                                CGU *
+                            </Link>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle color="teal">Conditions génerales d&apos;utilisation</DialogTitle>
+                            </DialogHeader>
+                            <DialogCloseTrigger />
+                            <DialogBody>
+                                {cguText ? (
+                                    <div>{cguText}</div> // Affichage des CGU récupérées
+                                ) : (
+                                    <p>Chargement des CGU...</p>
+                                )}
+                            </DialogBody>
+                        </DialogContent>
+                    </DialogRoot>
                 </Checkbox>
             </div>
             <Button
