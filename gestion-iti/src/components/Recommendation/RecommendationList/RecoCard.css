@@ -58,11 +58,12 @@
 .card{
     display: flex;
     flex-direction: column;
-    border: 1px solid #adadad;
+    border: 1px solid #803B22;
     border-radius: 10px;
     gap: 10px;
     margin-bottom: 10px;
     padding: 3px;
+
 }
 
 .card-principal{
@@ -87,6 +88,23 @@
     margin-left: auto; /* Permet de pousser l'élément tout à droite */
     width: 100px;
     height: 50px;
-    border: 1px solid gray;
+    border-left: 1px solid #803B22;
+    border-bottom: 1px solid #803B22;
     border-radius: 10px;
+}
+.card-type{
+    font-family: "Payton", sans-serif;
+}
+
+
+.card-footer{
+    display: flex;
+    justify-content:flex-end;
+    gap: 10px
+}
+.like{
+
+    border-radius: 10px;
+    width: 50px;
+    background-color: #4E2D2A;
 }

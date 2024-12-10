@@ -11,7 +11,7 @@
     z-index: 1000; /* Au-dessus des autres éléments */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ombre vers le haut */
     transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour le mode */
-    background-color: #1a202c;
+    background-color:#803B22;;
     border-radius: 20px;
 }
 
