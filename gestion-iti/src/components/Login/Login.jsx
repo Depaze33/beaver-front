@@ -68,7 +68,9 @@ function Login() {
         <div className={styles.form}>
             <div className={styles.title}>
                 <p className={styles.bigP}>Bonjour,</p>
-                <p>bienvenue sur <span className={styles.nametag}>placeholder !</span></p>
+                <p>bienvenue sur{" "}
+                    <img src="../../../public/BeaverNameTag.svg" alt="Logo" className={styles.logoNameTag} />
+                </p>
             </div>
             <div>
                 <Field className={styles.field} label="Email" required>
@@ -104,7 +106,7 @@ function Login() {
                 Pas encore inscrit ?{" "}
                 <Link
                     onClick={() => navigate('/signup')}
-                    color="teal.500"
+                    className={styles.colorPrimary}
                     fontWeight="bold"
                     _hover={{ textDecoration: "underline" }}
                 >

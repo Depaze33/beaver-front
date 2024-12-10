@@ -1,3 +1,7 @@
+.colorPrimary{
+    color: #F58D47
+}
+
 .form{
     display: flex;               
     flex-direction: column;      
@@ -14,12 +18,11 @@
 
 .bigP{
     font-size: 3em;
-    color: teal;
+    color: #F58D47
 }
 
-.nametag{
-    font-size: larger;
-    color: teal;
+.logoNameTag{
+    width: 300px
 }
 
 .input{
@@ -43,7 +46,7 @@ button{
 }
 
 .activeButton {
-    background-color: #4caf50; 
+    background-color: #F58D47; 
     color: white; 
     cursor: pointer; 
     border: none; 

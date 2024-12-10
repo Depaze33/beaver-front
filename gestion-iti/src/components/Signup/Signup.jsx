@@ -190,7 +190,7 @@ function Signup() {
                 if (i % 2 !== 0) {
                     // Si c'est un texte entre **, l'appliquer en couleur teal et en gras
                     return (
-                        <span key={i} style={{ color: 'teal', fontWeight: 'bold' }}>
+                        <span key={i} style={{ color: '#F58D47', fontWeight: 'bold' }}>
                             {part}
                         </span>
                     );
@@ -212,7 +212,10 @@ function Signup() {
         <div className={styles.form}>
             <div className={styles.title}>
                 <p className={styles.bigP}>Bonjour,</p>
-                <p>bienvenue sur <span className={styles.nametag}>placeholder !</span></p>
+                <p>
+                    bienvenue sur{" "}
+                    <img src="../../../public/BeaverNameTag.svg" alt="Logo" className={styles.logoNameTag} />
+                </p>
             </div>
             <div>
                 <Field className={styles.field} label="Nom de famille" required>
@@ -295,13 +298,13 @@ function Signup() {
                     J&apos;accepte les {" "}
                     <DialogRoot scrollBehavior="inside" size="sm">
                         <DialogTrigger asChild>
-                            <Link colorPalette="teal">
+                            <Link className={styles.colorPrimary}>
                                 CGU *
                             </Link>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle color="teal">Conditions génerales d&apos;utilisation</DialogTitle>
+                                <DialogTitle className={styles.colorPrimary}>Conditions génerales d&apos;utilisation</DialogTitle>
                             </DialogHeader>
                             <DialogCloseTrigger />
                             <DialogBody>
@@ -329,7 +332,7 @@ function Signup() {
                 Déjà inscrit ?{" "}
                 <Link
                     onClick={() => navigate('/login')}
-                    color="teal.500"
+                    className={styles.colorPrimary}
                     fontWeight="bold"
                     _hover={{ textDecoration: "underline" }}
                 >
