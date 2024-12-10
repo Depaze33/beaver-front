@@ -7,15 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import { Input, Button, Link } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useUser } from "../contexts/UserContext";
 
 function Login() {
     const [formData, setFormData] = useState({
         email: "",
         password: ""
-    }); // For managing input values
-    const [error, setError] = useState(null);     // For managing errors
-
-    const navigate = useNavigate(); // Hook to manage navigation
+    });
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const { setUser } = useUser();
 
     const isFormValid = () => {
         const { email, password } = formData;
@@ -45,25 +46,30 @@ function Login() {
             },
         })
             .then((response) => {
-                if (!response.ok) { // Check if response is OK
+                if (!response.ok) {
                     throw new Error(`Erreur : ${response.status}`);
                 }
 
                 return response.json();
             })
             .then((data) => {
-                console.log("Fetched data:", data);
+                console.log("Fetched data:", data); // à enlever plus tard
+                setUser(data.user);
                 localStorage.setItem('token', data.token);
-                navigate('/'); // Redirect to the dashboard on successful login
+                navigate('/');
             })
             .catch((error) => {
-                setError(error);     // Store the error in the state
+                setError(error);
                 console.log(error);
             });
     };
 
     return (
         <div className={styles.form}>
+            <div className={styles.title}>
+                <p className={styles.bigP}>Bonjour,</p>
+                <p>bienvenue sur <span className={styles.nametag}>placeholder !</span></p>
+            </div>
             <div>
                 <Field className={styles.field} label="Email" required>
                     <Input

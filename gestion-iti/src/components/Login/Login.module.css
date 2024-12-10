@@ -6,6 +6,22 @@
     height: 100vh;               /* Prend toute la hauteur de l'écran */
 }
 
+.title{
+    margin-bottom: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+.bigP{
+    font-size: 3em;
+    color: teal;
+}
+
+.nametag{
+    font-size: larger;
+    color: teal;
+}
+
 .input{
     width: 500px;
 }
@@ -27,4 +43,10 @@
     cursor: pointer; 
     border: none; 
     transition: background-color 0.3s ease; /* Animation de transition */
+}
+
+@media (max-width: 425px) {
+    .input{
+        width: 300px;
+    }
 }

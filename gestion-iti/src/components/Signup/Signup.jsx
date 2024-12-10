@@ -210,6 +210,10 @@ function Signup() {
 
     return (
         <div className={styles.form}>
+            <div className={styles.title}>
+                <p className={styles.bigP}>Bonjour,</p>
+                <p>bienvenue sur <span className={styles.nametag}>placeholder !</span></p>
+            </div>
             <div>
                 <Field className={styles.field} label="Nom de famille" required>
                     <Input
