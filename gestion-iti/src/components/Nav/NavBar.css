@@ -2,11 +2,11 @@
     position: sticky;
     top: 0;
     bottom: 0;
-    width: 100%;
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 3em;
+    height: 55px;
     z-index: 1000;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -19,13 +19,16 @@
 
 /* Optionnel : effet au survol des liens */
 .nav-bar a {
-    color: #f7fafc;
+    color:#4E2D2A;
     text-decoration: none;
     transition: color 0.3s ease;
+    width: 50px;
 }
 
 .nav-bar a:hover {
-    color: #3182ce; /* Couleur au survol */
+    color: #F58D47; /* Couleur au survol */
 }
+
+
 
 
