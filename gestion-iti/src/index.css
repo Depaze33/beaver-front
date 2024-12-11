@@ -1,5 +1,4 @@
 :root{
-    --primary(#4E2D2A)
-    --secondary(#F2D8AC)
-    --tertiary(#F58D47)
+    display: flex;
+    flex-direction: column;
 }

@@ -1,31 +1,21 @@
 .nav-bar {
     position: sticky;
     top: 0;
-    bottom: 0; /* Fixe la barre en bas */
-    align-items: center;
-    width: 100%; /* S'étend sur toute la largeur */
+    bottom: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     height: 3em;
-    z-index: 1000; /* Au-dessus des autres éléments */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ombre vers le haut */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour le mode */
-    background-color:#803B22;;
-    border-radius: 20px;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color:#F2D8AC;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-/* Mode clair */
-.nav-bar-light {
-    background-color: #f7fafc; /* Fond clair */
-    color: #1a202c; /* Texte sombre */
-}
-
-/* Mode sombre */
-.nav-bar-dark {
-    background-color: #1a202c; /* Fond sombre */
-    color: #f7fafc; /* Texte clair */
-}
 
 /* Optionnel : effet au survol des liens */
 .nav-bar a {
