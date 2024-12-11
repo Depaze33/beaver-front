@@ -1,18 +1,31 @@
 import { useEffect, useState } from 'react';
 import RecoCard from "@/components/Recommendation/RecommendationList/RecoCard.jsx";
 import PropTypes from "prop-types";
+import {Image} from "@chakra-ui/react";
 
 const RecommendationList = ({ filters }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [recommandations, setRecommandations] = useState([]);
 
+
+    function getImageByType(type) {
+        switch (type) {
+            case "HOSTEL":
+                return "hotel.png";
+            case "RESTAURANT":
+                return"restaurant-picto.png"
+
+            case "LEISURE":
+                return "bar.png"; // Image pour les musées
+            default:
+                return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"; // Image par défaut
+        }
+    }
     const mapToDatabaseValue = (frontValue) => {
         const mapping = {
             hotel: "HOSTEL",
             restaurant: "RESTAURANT",
-            bar: "BAR",
-            cafe: "CAFE",
             fast_food: "FAST_FOOD",
             loisir: "LEISURE"
         };
@@ -62,7 +75,7 @@ const RecommendationList = ({ filters }) => {
                     return (
                         <RecoCard
                             key={reco.id}
-                            img="https://upload.wikimedia.org/wikipedia/commons/6/6b/American_Beaver.jpg"
+                            img={getImageByType(location.locationType) || "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"}
                             type={location.locationType || "Type inconnu"}
                             title={location.name || "Nom inconnu"}
                             distance={40000}

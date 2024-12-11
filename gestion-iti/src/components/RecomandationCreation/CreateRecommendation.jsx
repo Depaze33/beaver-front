@@ -24,7 +24,7 @@ const CreateRecommendation = ({location}) => {
 
     const handleSubmit = async () => {
 
-        const locationType = location.tags.amenity === "restaurant"
+        const locationType = location.tags.amenity === "restaurant" || location.tags.amenity === "fast_food"
             ? "RESTAURANT"
             : location.tags.amenity === "bar"
                 ? "LEISURE"
