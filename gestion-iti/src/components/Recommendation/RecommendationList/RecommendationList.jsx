@@ -7,6 +7,7 @@ const RecommendationList = ({ filters }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [recommandations, setRecommandations] = useState([]);
+    const [selectedPosition, setSelectedPosition] = useState(null);
 
 
     function getImageByType(type) {
@@ -80,6 +81,8 @@ const RecommendationList = ({ filters }) => {
                             title={location.name || "Nom inconnu"}
                             distance={40000}
                             comment={reco.comment || "Aucun commentaire"}
+                            onShowOnMap={() => setSelectedPosition(reco.coordinates)} // Passez les coordonnées au clic
+
                         />
                     );
                 })}

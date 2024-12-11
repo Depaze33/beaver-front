@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import {useState, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -187,11 +187,12 @@ RecherchMarkers.propTypes = {
 };
 
 // Composant Map avec filtres pour les types de lieux
-const Map = () => {
+const Map = ({selectedPosition}) => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
+    const [filters, setFilters] = useState(["restaurant", "bar", "hotel","fast_food",]);// Filtres par
     // défaut
+    const defaultPosition = [48.8566, 2.3522];
 
     useEffect(() => {
         if (coords) {
@@ -199,7 +200,7 @@ const Map = () => {
         }
     }, [coords]);
 
-    // Ne pas afficher la carte si la géolocalisation n'est pas disponible ou activée
+    //Ne pas afficher la carte si la géolocalisation n'est pas disponible ou activée
     if (!isGeolocationAvailable) {
         return <div>Your browser does not support Geolocation</div>;
     }
@@ -211,7 +212,6 @@ const Map = () => {
     if (!coords) {
         return <div>Getting your location&hellip;</div>;
     }
-
     // Gérer la fin du drag du marqueur
     const handleMarkerDragEnd = (event) => {
         const { lat, lng } = event.target.getLatLng();
