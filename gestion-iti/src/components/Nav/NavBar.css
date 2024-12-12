@@ -2,7 +2,7 @@
     position: sticky;
     top: 0;
     bottom: 0;
-    width: 80%;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: space-around;
