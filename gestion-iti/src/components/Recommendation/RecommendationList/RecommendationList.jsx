@@ -1,9 +1,16 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import RecoCard from "@/components/Recommendation/RecommendationList/RecoCard.jsx";
 import PropTypes from "prop-types";
-import {Image} from "@chakra-ui/react";
 
-const RecommendationList = ({ filters }) => {
+
+/**
+ *
+ * @param filters
+ * @param mapId : id to map
+ * @returns {JSX.Element} information displayed on the recommendations page
+ * @constructor
+ */
+const RecommendationList = ({filters, mapId}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [recommandations, setRecommandations] = useState([]);
@@ -15,7 +22,7 @@ const RecommendationList = ({ filters }) => {
             case "HOSTEL":
                 return "hotel.png";
             case "RESTAURANT":
-                return"restaurant-picto.png"
+                return "restaurant-picto.png"
 
             case "LEISURE":
                 return "bar.png"; // Image pour les musées
@@ -23,6 +30,7 @@ const RecommendationList = ({ filters }) => {
                 return "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"; // Image par défaut
         }
     }
+
     const mapToDatabaseValue = (frontValue) => {
         const mapping = {
             hotel: "HOSTEL",
@@ -56,21 +64,21 @@ const RecommendationList = ({ filters }) => {
         fetchRecommandation();
     }, []);
 
-    const databaseFilters = filters.map(mapToDatabaseValue);
+    // const databaseFilters = filters.map(mapToDatabaseValue);
 
     return (
         <>
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
             {recommandations
-                .filter((reco) => {
-                    // Vérifiez si location existe et a un locationType correspondant
-                    return (
-                        reco.location &&
-                        reco.location.locationType &&
-                        databaseFilters.includes(reco.location.locationType)
-                    );
-                })
+                // .filter((reco) => {
+                //     // Vérifiez si location existe et a un locationType correspondant
+                //     return (
+                //         reco.location &&
+                //         reco.location.locationType &&
+                //         // databaseFilters.includes(reco.location.locationType)
+                //     );
+                // })
                 .map((reco) => {
                     const location = reco.location || {}; // Défaut à un objet vide si location est null
                     return (
@@ -92,6 +100,7 @@ const RecommendationList = ({ filters }) => {
 
 RecommendationList.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.string),
+    mapId: PropTypes.number
 };
 
 export default RecommendationList;

@@ -14,7 +14,15 @@ import {
 } from '@/components/ui/dialog';
 import Note from '@/components/RecomandationCreation/Note.jsx';
 import {Button} from '@/components/ui/button.jsx';
+import PropTypes from "prop-types";
+import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
+/**
+ *
+ * @param location
+ * @returns {JSX.Element} display pop up on map
+ * @constructor
+ */
 const CreateRecommendation = ({location}) => {
     const [comment, setComment] = useState('');
     const [notationReco, setNotationReco] = useState(true);
@@ -73,7 +81,8 @@ const CreateRecommendation = ({location}) => {
             console.error('Fetch error:', error);
         }
     };
-
+   CreateRecommendation.propTypes = {
+        location: PropTypes.string};
     return (
         <DialogRoot size="cover" placement="center" motionPreset="slide-in-bottom">
             <DialogTrigger asChild>
