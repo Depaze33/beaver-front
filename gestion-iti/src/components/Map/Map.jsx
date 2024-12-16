@@ -1,8 +1,8 @@
 import {useState, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
-import {MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import {GeoSearchControl, OpenStreetMapProvider} from "leaflet-geosearch";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 import Filters from '../Div/Filter.jsx'; // Import du composant Filters
 import CreateRecommendation from "@/components/RecomandationCreation/CreateRecommendation.jsx";
@@ -31,14 +31,9 @@ const blueIcon = new L.Icon({
     shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
     shadowSize: [41, 41],
 });
-/**
- *
- * @param onSearch
- * @returns {null}
- * @constructor
- */
+
 // Composant SearchControl pour la recherche géolocalisée
-const SearchControl = ({onSearch}) => {
+const SearchControl = ({ onSearch }) => {
     const map = useMap();
 
     useEffect(() => {
@@ -58,7 +53,7 @@ const SearchControl = ({onSearch}) => {
 
         map.on("geosearch/showlocation", (result) => {
             // Inverser x et y en lat et lng
-            const {x, y} = result.location;
+            const { x, y } = result.location;
             const lat = y;  // y devient lat
             const lng = x;  // x devient lng
 
@@ -91,14 +86,7 @@ const SearchControl = ({onSearch}) => {
 SearchControl.propTypes = {
     onSearch: PropTypes.func,
 };
-/**
- *
- * @param coords
- * @param filters
- * @param setMapId
- * @returns {JSX.Element}
- * @constructor
- */
+
 // Composant RecherchMarkers avec filtres
 const RecherchMarkers = ({coords, filters, setMapId}) => {
     const [locations, setLocations] = useState([]);
@@ -125,9 +113,7 @@ const RecherchMarkers = ({coords, filters, setMapId}) => {
                     `[out:json];
         (${typesQuery});
         out geom;`
-                )}`
-
-            ;
+            )}`;
 
             try {
                 const response = await fetch(`https://overpass-api.de/api/interpreter`, {
@@ -178,14 +164,13 @@ const RecherchMarkers = ({coords, filters, setMapId}) => {
     if (error) {
         return <div>{error}</div>;
     }
-    
+
 
     function handleClickOnMarker(event) {
         setMapId(event.target.options.mapId)
     }
 
     return (
-        //data attribute
         <>
             {locations.map((location) => (
                 <Marker
@@ -199,9 +184,9 @@ const RecherchMarkers = ({coords, filters, setMapId}) => {
                 >
                     <Popup>
                         <strong>{location.tags?.name || "Unnamed Location"}</strong>
-                        <br/>
+                        <br />
                         Type: {location.tags?.cuisine || location.tags?.tourism || "Unknown"}
-                        <br/>
+                        <br />
                         <CreateRecommendation location={location}/>
                     </Popup>
                 </Marker>
@@ -215,14 +200,10 @@ RecherchMarkers.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.string),
     setMapId: PropTypes.func,
 };
-/**
- *
- * @returns {JSX.Element}
- * @constructor
- */
+
 // Composant Map avec filtres pour les types de lieux
 const Map = () => {
-    const {coords, isGeolocationAvailable, isGeolocationEnabled} = useGeoLocation();
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
     const [filters, setFilters] = useState(["restaurant", "bar", "hotel", "fast_food",]);// Filtres par
     // défaut
@@ -235,7 +216,7 @@ const Map = () => {
         }
     }, [coords]);
 
-    //Ne pas afficher la carte si la géolocalisation n'est pas disponible ou activée
+    // Ne pas afficher la carte si la géolocalisation n'est pas disponible ou activée
     if (!isGeolocationAvailable) {
         return <div>Your browser does not support Geolocation</div>;
     }
@@ -253,7 +234,7 @@ const Map = () => {
      * @param event L'évènement à traiter
      */
     const handleMarkerDragEnd = (event) => {
-        const {lat, lng} = event.target.getLatLng();
+        const { lat, lng } = event.target.getLatLng();
         setMarkerPosition([lat, lng]);
 
         // Récupère l'instance de la carte via l'événement et récentre la carte
@@ -285,12 +266,12 @@ const Map = () => {
 
     return (
         <div className="map-container">
-            <Filters filters={filters} onFilterChange={toggleFilter}/>
+            <Filters filters={filters} onFilterChange={toggleFilter} />
             <MapContainer
                 center={markerPosition || [coords.latitude, coords.longitude]}  // Utilise markerPosition comme centre
                 zoom={14}
                 scrollWheelZoom={true}
-                style={{height: "100vh", width: "100%"}}
+                style={{ height: "100vh", width: "100%" }}
                 whenCreated={(map) => {
                     // S'assurer que la carte suit le marqueur après chaque changement de position
                     if (markerPosition) {
@@ -318,8 +299,7 @@ const Map = () => {
                 {filters.length > 0 && markerPosition && (
                     <RecherchMarkers setMapId={setMapId} coords={markerPosition} filters={filters}/>
                 )}
-                <SearchControl onSearch={handleSearch}/>
-
+                <SearchControl onSearch={handleSearch} />
             </MapContainer>
 
             {mapId !== null ? <RecommendationList mapId={mapId}/> : "Pas de recommendations"}

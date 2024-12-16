@@ -1,4 +1,3 @@
-import React from 'react';
 import Avatar from '../Div/UserAvatar.jsx';
 import Badges from '../Div/Badges.jsx'
 import { ColorModeButton } from "@/components/ui/color-mode"
