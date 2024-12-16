@@ -1,0 +1,16 @@
+.nom{
+font-size: 60px;
+font-weight: bold;
+}
+
+.prenom{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+.AvatarUser{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
