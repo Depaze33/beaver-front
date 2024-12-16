@@ -1,6 +1,6 @@
 .chakra-dialog__content{
     width: 270px;
-    background-color: #D6BBFB;
+    background-color: #4E2D2A;
 }
 
 
@@ -31,7 +31,7 @@
 }
 
 .filters label:hover {
-    background-color: #b19bcb; /* Effet au survol */
+    background-color: #F2D8AC /* Effet au survol */
 }
 .filters label:active {
     background-color: rebeccapurple;

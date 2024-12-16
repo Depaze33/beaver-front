@@ -269,12 +269,14 @@
 }
 
 .leaflet-control-geosearch a.reset:hover {
-    background: #dab0b0;
+    background: #F2D8AC;
 }
 
 .leaflet-control-geosearch .results{
-    background-color: #dab0b0;
+    background-color: #F2D8AC;
+    color: #803B22;
 }
 .leaflet-control-geosearch .reset{
     color: black;
+
 }

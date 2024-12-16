@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,6 +8,8 @@ import Filters from '../Div/Filter.jsx'; // Import du composant Filters
 import CreateRecommendation from "@/components/RecomandationCreation/CreateRecommendation.jsx";
 import L from "leaflet";
 import './Map.css'
+import '@/components/Recommendation/RecommendationList/RecommendationList.jsx'
+import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
 
 // Icône rouge pour le marqueur de la position
@@ -86,7 +88,7 @@ SearchControl.propTypes = {
 };
 
 // Composant RecherchMarkers avec filtres
-const RecherchMarkers = ({ coords, filters }) => {
+const RecherchMarkers = ({coords, filters, setMapId}) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -104,11 +106,11 @@ const RecherchMarkers = ({ coords, filters }) => {
             const typesQuery = filters
                 .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});
                                        nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`
-            )
+                )
 
                 .join(" ");
             const query = `data=${encodeURIComponent(
-                `[out:json];
+                    `[out:json];
         (${typesQuery});
         out geom;`
             )}`;
@@ -154,13 +156,28 @@ const RecherchMarkers = ({ coords, filters }) => {
         fetchWithDynamicRadius();
         fetchLocations();
     }, [coords, filters]);
-    if (loading) return <div>Loading locations...</div>;
-    if (error) return <div>{error}</div>;
+
+    if (loading) {
+        return <div>Loading locations...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+
+    function handleClickOnMarker(event) {
+        setMapId(event.target.options.mapId)
+    }
 
     return (
         <>
             {locations.map((location) => (
                 <Marker
+                    mapId={location.id}
+                    eventHandlers={{
+                        click: handleClickOnMarker
+                    }}
                     key={location.id}
                     position={[location.lat ?? location.bounds.maxlat, location.lon ?? location.bounds.maxlon]}
                     icon={blueIcon} // Applique l'icône bleue pour les lieux autour
@@ -181,13 +198,17 @@ const RecherchMarkers = ({ coords, filters }) => {
 RecherchMarkers.propTypes = {
     coords: PropTypes.arrayOf(PropTypes.number),
     filters: PropTypes.arrayOf(PropTypes.string),
+    setMapId: PropTypes.func,
 };
 
 // Composant Map avec filtres pour les types de lieux
 const Map = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe"]); // Filtres par défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "hotel", "fast_food",]);// Filtres par
+    // défaut
+    // const defaultPosition = [48.8566, 2.3522];
+    const [mapId, setMapId] = useState(null);
 
     useEffect(() => {
         if (coords) {
@@ -208,7 +229,10 @@ const Map = () => {
         return <div>Getting your location&hellip;</div>;
     }
 
-    // Gérer la fin du drag du marqueur
+    /**
+     * Gérer la fin du drag du marqueur
+     * @param event L'évènement à traiter
+     */
     const handleMarkerDragEnd = (event) => {
         const { lat, lng } = event.target.getLatLng();
         setMarkerPosition([lat, lng]);
@@ -218,7 +242,11 @@ const Map = () => {
         map.setView([lat, lng], map.getZoom());  // Réinitialise la vue de la carte sur la nouvelle position
     };
 
-    // Gérer la recherche géolocalisée
+
+    /**
+     * Gérer la recherche géolocalisée
+     * @param newPosition nouvelle position de recherche
+     */
     const handleSearch = (newPosition) => {
         if (newPosition && newPosition[0] !== undefined && newPosition[1] !== undefined) {
             setMarkerPosition(newPosition); // Mettre à jour la position avec la recherche
@@ -234,6 +262,7 @@ const Map = () => {
             prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
         );
     };
+
 
     return (
         <div className="map-container">
@@ -268,10 +297,12 @@ const Map = () => {
                 )}
                 {/* Affichage des marqueurs des lieux uniquement si des filtres sont sélectionnés */}
                 {filters.length > 0 && markerPosition && (
-                    <RecherchMarkers coords={markerPosition} filters={filters} />
+                    <RecherchMarkers setMapId={setMapId} coords={markerPosition} filters={filters}/>
                 )}
                 <SearchControl onSearch={handleSearch} />
             </MapContainer>
+
+            {mapId !== null ? <RecommendationList mapId={mapId}/> : "Pas de recommendations"}
         </div>
     );
 };

@@ -14,7 +14,15 @@ import {
 } from '@/components/ui/dialog';
 import Note from '@/components/RecomandationCreation/Note.jsx';
 import {Button} from '@/components/ui/button.jsx';
+import PropTypes from "prop-types";
+import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
 
+/**
+ *
+ * @param location
+ * @returns {JSX.Element} display pop up on map
+ * @constructor
+ */
 const CreateRecommendation = ({location}) => {
     const [comment, setComment] = useState('');
     const [notationReco, setNotationReco] = useState(true);
@@ -24,7 +32,7 @@ const CreateRecommendation = ({location}) => {
 
     const handleSubmit = async () => {
 
-        const locationType = location.tags.amenity === "restaurant"
+        const locationType = location.tags.amenity === "restaurant" || location.tags.amenity === "fast_food"
             ? "RESTAURANT"
             : location.tags.amenity === "bar"
                 ? "LEISURE"
@@ -63,6 +71,7 @@ const CreateRecommendation = ({location}) => {
                 body: JSON.stringify(recommendationJson),
             });
 
+            //TODO mettre une indications pour l'utilisateur
             if (response.ok) {
                 const result = await response.json();
                 console.log('Response:', result);
@@ -116,5 +125,8 @@ const CreateRecommendation = ({location}) => {
         </DialogRoot>
     );
 };
+
+CreateRecommendation.propTypes = {
+    location: PropTypes.object}
 
 export default CreateRecommendation;

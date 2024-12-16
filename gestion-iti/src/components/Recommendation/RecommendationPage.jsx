@@ -1,10 +1,11 @@
-import  {useState} from 'react'
+import {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
+import './RecommendationList/RecommendationPage.css'
 
 const RecommendationPage = () => {
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
-    // défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe", "hotel", "fast_food", "loisir"]);
+    // const [mapId, setMapId] = useState(null);
 
     const onFilterChange = (filter) => {
         setFilters((prevFilters) =>
@@ -15,9 +16,9 @@ const RecommendationPage = () => {
     };
 
     return (
-        <div>
-            <FilterBar filters={filters} onFilterChange={onFilterChange} />
-            <RecommendationList filters={filters}  />
+        <div className="card-page">
+            <FilterBar filters={filters} onFilterChange={onFilterChange}/>
+            <RecommendationList filters={filters} />
         </div>
 
     )

@@ -58,11 +58,14 @@
 .card{
     display: flex;
     flex-direction: column;
-    border: 1px solid #adadad;
-    border-radius: 10px;
-    gap: 10px;
-    margin-bottom: 10px;
+    background-color: #462a27;
+    border: 2px solid #F58D47;
+    border-radius: 15px;
+    width: 350px;
+    height: 160px;
     padding: 3px;
+
+
 }
 
 .card-principal{
@@ -75,18 +78,54 @@
 
 .card-img{
     min-width: 20%;
+
 }
 
 .card-comment{
     width: 210px;
     align-items: center;
+    color: white;
+    font-family: "Geologica", sans-serif;
+    font-weight:200;
+
 }
 
 .card-distance {
+    margin-top: 3px;
     text-align: right;
     margin-left: auto; /* Permet de pousser l'élément tout à droite */
     width: 100px;
     height: 50px;
-    border: 1px solid gray;
+    border-left: 1px solid #F58D47;
+    border-bottom: 1px solid #F58D47;
     border-radius: 10px;
+    font-family: "Paytone One", sans-serif;
+    font-weight:200;
+    font-size: 13px;
 }
+.card-type{
+    font-family: "Geologica", sans-serif;
+
+}
+
+
+.card-footer{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-end;
+    gap: 10px
+}
+.like{
+
+    border-radius: 10px;
+    width: 50px;
+    background-color: #4E2D2A;
+}
+
+.go-map{
+   background-color: #F58D47;
+    width: 10px;
+    height: 20px;
+    border-radius: 15px;
+}
+

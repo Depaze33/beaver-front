@@ -1,5 +1,7 @@
 import {Button} from "@/components/ui/button"
+import {Image} from '@chakra-ui/react';
 import PropTypes from "prop-types";
+import {FaArrowRight} from "react-icons/fa";
 import './RecoCard.css'
 
 const RecoCard = ({img, type, title, distance, comment}) => {
@@ -20,23 +22,29 @@ const RecoCard = ({img, type, title, distance, comment}) => {
                         <div className="card-title">
                             <h3>{title}</h3>
                         </div>
-
                         <div className="card-comment">
-                            <p>{comment}</p>
+                            <p className="comment-text">{comment}</p>
                         </div>
                     </div>
-
                 </div>
                 <div className="card-distance">
-
                     <span>Distance: {distance} m</span>
                 </div>
             </div>
-            <div className="card-footer" style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Button variant="outline">👍</Button>
-                {/*<Button>👎</Button>*/}
+            <div className="card-footer">
+                <Button className="like">
+                    <Image
+                        src="/heart-logo.png"
+                        alt="heart logo"
+                        boxSize="20px"
+                    />
+                </Button>
+                <Button className="go-map">
+                    <FaArrowRight/>
+                </Button>
             </div>
         </div>
+
     )
 }
 RecoCard.propTypes = {
