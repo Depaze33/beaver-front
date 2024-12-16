@@ -1,4 +1,4 @@
-import React from "react";
+
 import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 
 const Geo = () => {

@@ -1,0 +1,65 @@
+.colorPrimary{
+    color: #F58D47
+}
+
+.form{
+    display: flex;               
+    flex-direction: column;      
+    align-items: center;         
+    justify-content: center;     
+    height: 100vh;               /* Prend toute la hauteur de l'écran */
+}
+
+.title{
+    margin-bottom: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+.bigP{
+    font-size: 3em;
+    color: #F58D47
+}
+
+.logoNameTag{
+    width: 300px
+}
+
+.input{
+    width: 500px;
+}
+
+.field{
+    margin-bottom: 20px;
+}
+
+button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.disabledButton {
+    background-color: #d3d3d3; 
+    color: #7a7a7a; 
+    cursor: not-allowed; /* Icône de curseur bloqué */
+    border: 1px solid #ccc; 
+}
+
+.activeButton {
+    background-color: #F58D47; 
+    color: white; 
+    cursor: pointer; 
+    border: none; 
+    transition: background-color 0.3s ease; /* Animation de transition */
+}
+
+.activeButton:hover {
+    background-color: #45a049; 
+}
+
+
+@media (max-width: 425px) {
+    .input{
+        width: 300px;
+    }
+}

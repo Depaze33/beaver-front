@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -111,9 +111,7 @@ const RecherchMarkers = ({ coords, filters }) => {
                 `[out:json];
         (${typesQuery});
         out geom;`
-            )}`
-
-           ;
+            )}`;
 
             try {
                 const response = await fetch(`https://overpass-api.de/api/interpreter`, {
@@ -158,9 +156,8 @@ const RecherchMarkers = ({ coords, filters }) => {
     }, [coords, filters]);
     if (loading) return <div>Loading locations...</div>;
     if (error) return <div>{error}</div>;
-console.log(locations)
+
     return (
-        //data attribute
         <>
             {locations.map((location) => (
                 <Marker
@@ -190,8 +187,7 @@ RecherchMarkers.propTypes = {
 const Map = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();
     const [markerPosition, setMarkerPosition] = useState(null);
-    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
-    // défaut
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe"]); // Filtres par défaut
 
     useEffect(() => {
         if (coords) {

@@ -1,5 +1,3 @@
-// ./components/UserAvatar.jsx
-import React from 'react';
 import {Avatar} from "../ui/avatar.jsx"; // Ton composant Avatar
 
 const UserAvatar = () => {
