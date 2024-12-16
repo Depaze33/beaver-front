@@ -10,16 +10,14 @@ const TopBar = () => {
         <Flex as = "header" className="top-bar">
             <div className="logo-top">
                 <p className="logo-name">BEA</p>
-                <Image className="logo"
-                       src="/logo.svg"
-                />
+                <Image className="logo" src="/logo.svg"/>
                 <p className="logo-name">VEAR</p>
             </div>
 
             <div className="top-bar-right">
                 <Badges/>
                 <ColorModeButton/>
-                <Link to="/profile"><Avatar/> {/* Utilisation de UserAvatar */}</Link>;
+                <Link to="/profile"><Avatar/> {/* Utilisation de UserAvatar */}</Link>
                 
             </div>
 

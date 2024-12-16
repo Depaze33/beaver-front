@@ -16,7 +16,6 @@ const RecommendationList = ({filters, mapId}) => {
     const [recommandations, setRecommandations] = useState([]);
     // const [selectedPosition, setSelectedPosition] = useState(null);
 
-
     function getImageByType(type) {
         switch (type) {
             case "HOSTEL":
@@ -51,9 +50,13 @@ const RecommendationList = ({filters, mapId}) => {
                 let response = null;
                 if (mapId !== undefined) { // cas avec un mapId pour récupérer toutes les recommendations liées à un
                     // lieu existant sur OSM
-                    response = await fetch(`http://localhost:8000/api/recommendations?mapId=${mapId}`);
+                    response = await fetch(`http://localhost:8000/api/recommendations?mapId=${mapId}`, {
+                        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                    });
                 } else { // cas sans mapId pour tout récupérer
-                    response = await fetch(`http://localhost:8000/api/recommendations`);
+                    response = await fetch(`http://localhost:8000/api/recommendations`, {
+                        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                    });
                 }
 
                 if (!response.ok) {

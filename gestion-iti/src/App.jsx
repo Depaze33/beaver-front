@@ -10,19 +10,28 @@ import Login from './components/Login/Login.jsx';
 import Signup from './components/Signup/Signup.jsx';
 import { UserProvider } from './components/contexts/UserContext.jsx';
 import UserPage from '@/components/user_profil/UserPage';
+import { useEffect } from 'react';
+import { ProtectedRoute } from './components/Login/ProtectedRoute.jsx';
 
 function App() {
+
     return (
         <BrowserRouter>
             <TopBar />
             <UserProvider>
                 <Routes>
                     <Route>
-                        <Route path='/' element={<RecommendationPage />} />
+                        <Route path='/' element={<ProtectedRoute>
+                                                    <RecommendationPage />
+                                                </ProtectedRoute>} />
+                        <Route path='/map' element={<ProtectedRoute>
+                                                        <Map />
+                                                    </ProtectedRoute>} />
+                        <Route path='/profile' element={<ProtectedRoute>
+                                                            <UserPage />
+                                                        </ProtectedRoute>} />
                         <Route path='/login' element={<Login />} />
                         <Route path='/signup' element={<Signup />} />
-                        <Route path='/map' element={<Map />} />
-                        <Route path='/profile' element={<UserPage />} />
                     </Route>
                 </Routes>
             </UserProvider>
