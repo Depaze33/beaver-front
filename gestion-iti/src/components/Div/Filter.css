@@ -1,0 +1,56 @@
+.chakra-dialog__content{
+    width: 270px;
+    background-color: #D6BBFB;
+}
+
+
+.filters {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    width: 200px;
+    font-size: large;
+}
+
+.filters input[type="checkbox"] {
+
+    display: none;
+}
+
+.filter label.checked{
+    background-color: white;
+}
+.filters label {
+    cursor: pointer;
+    padding: 5px 10px;
+   color: #1a202c;
+    border-radius: 5px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filters label:hover {
+    background-color: #b19bcb; /* Effet au survol */
+}
+.filters label:active {
+    background-color: rebeccapurple;
+    color: white;
+}
+
+.button-apply{
+    color: #f7fafc;
+    background-color: rebeccapurple;
+}
+
+.dialog-title{
+    color: rebeccapurple;
+}
+
+.filter-label.checked {
+
+    font-weight: bold;
+}
+
+
+

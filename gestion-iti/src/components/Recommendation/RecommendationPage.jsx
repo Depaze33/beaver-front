@@ -1,11 +1,12 @@
 import  {useState} from 'react'
 import FilterBar from './Filter/FilterBar.jsx'
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
-import Filters from "@/components/Div/Filter.jsx";
-const Recommendation = () => {
-    const [filters, setFilters] = useState([]);
 
-    const handleFilterChange = (filter) => {
+const RecommendationPage = () => {
+    const [filters, setFilters] = useState(["restaurant", "bar", "cafe","hotel","fast_food","loisir"]); // Filtres par
+    // défaut
+
+    const onFilterChange = (filter) => {
         setFilters((prevFilters) =>
             prevFilters.includes(filter)
                 ? prevFilters.filter((f) => f !== filter) // Remove filter
@@ -15,11 +16,10 @@ const Recommendation = () => {
 
     return (
         <div>
-            <Filters filters={filters} onFilterChange={handleFilterChange} />
-            <FilterBar />
-            <RecommendationList filters={filters} />
+            <FilterBar filters={filters} onFilterChange={onFilterChange} />
+            <RecommendationList filters={filters}  />
         </div>
 
     )
 }
-export default Recommendation
+export default RecommendationPage

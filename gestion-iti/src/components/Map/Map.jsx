@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
-import useGeoLocation from "../Hook/Hooks.jsx";
+import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 import Filters from '../Div/Filter.jsx'; // Import du composant Filters
+import CreateRecommendation from "@/components/RecomandationCreation/CreateRecommendation.jsx";
 import L from "leaflet";
+import './Map.css'
+
 
 // Icône rouge pour le marqueur de la position
 const redIcon = new L.Icon({
@@ -87,7 +90,6 @@ const RecherchMarkers = ({ coords, filters }) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [notes, setNotes] = useState({});
 
     useEffect(() => {
         if (!coords || filters.length === 0) return;
@@ -101,9 +103,10 @@ const RecherchMarkers = ({ coords, filters }) => {
 
             const typesQuery = filters
                 .map((type) => `nwr["amenity"="${type}"](around:${radius},${latitude},${longitude});
-                                       nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`)
-                .join(" ");
+                                       nwr["tourism"="${type}"](around:${radius},${latitude},${longitude});`
+            )
 
+                .join(" ");
             const query = `data=${encodeURIComponent(
                 `[out:json];
         (${typesQuery});
@@ -131,17 +134,26 @@ const RecherchMarkers = ({ coords, filters }) => {
                 setLoading(false);
             }
         };
+        const fetchWithDynamicRadius = async () => {
+            let radius = 5000; // Start with 5 km radius
+            let locations = [];
+            let attempt = 0;
 
+            while (locations.length > 50 && radius > 500 && attempt < 5) {
+                locations = await fetchLocations(radius);
+                attempt++;
+                if (locations.length > 50) {
+                    radius = Math.max(500, radius / 2); // Reduce radius but not below 500 meters
+                }
+            }
+
+            setLocations(locations);
+            setLoading(false);
+        };
+
+        fetchWithDynamicRadius();
         fetchLocations();
     }, [coords, filters]);
-
-    const handleNoteChange = (locationId, note) => {
-        setNotes((prevNotes) => ({
-            ...prevNotes,
-            [locationId]: note,
-        }));
-    };
-
     if (loading) return <div>Loading locations...</div>;
     if (error) return <div>{error}</div>;
 
@@ -158,26 +170,7 @@ const RecherchMarkers = ({ coords, filters }) => {
                         <br />
                         Type: {location.tags?.cuisine || location.tags?.tourism || "Unknown"}
                         <br />
-                        <div>
-                            <p>Rate this place:</p>
-                            <div style={{ display: "flex", gap: "5px" }}>
-                                {["👍", "😐", "👎"].map((emoji) => (
-                                    <button
-                                        key={emoji}
-                                        onClick={() => handleNoteChange(location.id, emoji)}
-                                        style={{
-                                            fontSize: "1.5rem",
-                                            background: notes[location.id] === emoji ? "#ddd" : "transparent",
-                                            border: "none",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        {emoji}
-                                    </button>
-                                ))}
-                            </div>
-                            {notes[location.id] && <p>Note: {notes[location.id]}</p>}
-                        </div>
+                        <CreateRecommendation location={location}/>
                     </Popup>
                 </Marker>
             ))}

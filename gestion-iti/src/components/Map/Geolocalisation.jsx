@@ -1,4 +1,5 @@
-import useGeoLocation from "../Hook/Hooks.jsx";
+
+import useGeoLocation from "../Hook/GeolocalisationHook.jsx";
 
 const Geo = () => {
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeoLocation();

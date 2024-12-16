@@ -2,18 +2,17 @@
     position: sticky;
     top: 0;
     bottom: 0; /* Fixe la barre en bas */
-    left: 0;
     align-items: center;
-    width: 99%; /* S'étend sur toute la largeur */
+    width: 100%; /* S'étend sur toute la largeur */
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 5em;
+    height: 3em;
     z-index: 1000; /* Au-dessus des autres éléments */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ombre vers le haut */
     transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour le mode */
     background-color: #1a202c;
-    border-radius: 40px;
+    border-radius: 20px;
 }
 
 /* Mode clair */
