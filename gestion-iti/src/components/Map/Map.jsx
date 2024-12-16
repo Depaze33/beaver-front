@@ -178,7 +178,7 @@ const RecherchMarkers = ({coords, filters, setMapId}) => {
     if (error) {
         return <div>{error}</div>;
     }
-    console.log(locations)
+    
 
     function handleClickOnMarker(event) {
         setMapId(event.target.options.mapId)
@@ -282,7 +282,7 @@ const Map = () => {
         );
     };
 
-    console.log("mapId = " + mapId);
+
     return (
         <div className="map-container">
             <Filters filters={filters} onFilterChange={toggleFilter}/>

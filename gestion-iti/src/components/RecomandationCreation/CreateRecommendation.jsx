@@ -71,6 +71,7 @@ const CreateRecommendation = ({location}) => {
                 body: JSON.stringify(recommendationJson),
             });
 
+            //TODO mettre une indications pour l'utilisateur
             if (response.ok) {
                 const result = await response.json();
                 console.log('Response:', result);
