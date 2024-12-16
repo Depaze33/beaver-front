@@ -54,6 +54,8 @@ function Login() {
             })
             .then((data) => {
                 console.log("Fetched data:", data); // à enlever plus tard
+                // TODO bien vérfifier que le Json récupéré est similaire au Json renvoyé par le serveru
+                // lors d'une requête telle que http://localhost:8000/api/users/673b0c1bed6e66efdc49204c
                 setUser(data.user);
                 localStorage.setItem('token', data.token);
                 navigate('/');
