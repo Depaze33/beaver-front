@@ -170,8 +170,14 @@ const RecherchMarkers = ({coords, filters, setMapId}) => {
         fetchWithDynamicRadius();
         fetchLocations();
     }, [coords, filters]);
-    if (loading) return <div>Loading locations...</div>;
-    if (error) return <div>{error}</div>;
+
+    if (loading) {
+        return <div>Loading locations...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
     console.log(locations)
 
     function handleClickOnMarker(event) {
@@ -241,7 +247,11 @@ const Map = () => {
     if (!coords) {
         return <div>Getting your location&hellip;</div>;
     }
-    // Gérer la fin du drag du marqueur
+
+    /**
+     * Gérer la fin du drag du marqueur
+     * @param event L'évènement à traiter
+     */
     const handleMarkerDragEnd = (event) => {
         const {lat, lng} = event.target.getLatLng();
         setMarkerPosition([lat, lng]);
@@ -250,11 +260,12 @@ const Map = () => {
         const map = event.target._map;
         map.setView([lat, lng], map.getZoom());  // Réinitialise la vue de la carte sur la nouvelle position
     };
+
+
     /**
-     *
-     * @param newPosition
+     * Gérer la recherche géolocalisée
+     * @param newPosition nouvelle position de recherche
      */
-    // Gérer la recherche géolocalisée
     const handleSearch = (newPosition) => {
         if (newPosition && newPosition[0] !== undefined && newPosition[1] !== undefined) {
             setMarkerPosition(newPosition); // Mettre à jour la position avec la recherche
@@ -271,6 +282,7 @@ const Map = () => {
         );
     };
 
+    console.log("mapId = " + mapId);
     return (
         <div className="map-container">
             <Filters filters={filters} onFilterChange={toggleFilter}/>
@@ -309,8 +321,8 @@ const Map = () => {
                 <SearchControl onSearch={handleSearch}/>
 
             </MapContainer>
-            <RecommendationList mapId={mapId}/>
 
+            {mapId !== null ? <RecommendationList mapId={mapId}/> : "Pas de recommendations"}
         </div>
     );
 };

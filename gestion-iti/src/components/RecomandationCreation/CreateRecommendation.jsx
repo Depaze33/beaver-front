@@ -81,8 +81,7 @@ const CreateRecommendation = ({location}) => {
             console.error('Fetch error:', error);
         }
     };
-   CreateRecommendation.propTypes = {
-        location: PropTypes.string};
+
     return (
         <DialogRoot size="cover" placement="center" motionPreset="slide-in-bottom">
             <DialogTrigger asChild>
@@ -125,5 +124,8 @@ const CreateRecommendation = ({location}) => {
         </DialogRoot>
     );
 };
+
+CreateRecommendation.propTypes = {
+    location: PropTypes.object}
 
 export default CreateRecommendation;

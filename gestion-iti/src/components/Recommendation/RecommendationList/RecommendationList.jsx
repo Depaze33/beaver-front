@@ -14,7 +14,7 @@ const RecommendationList = ({filters, mapId}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [recommandations, setRecommandations] = useState([]);
-    const [selectedPosition, setSelectedPosition] = useState(null);
+    // const [selectedPosition, setSelectedPosition] = useState(null);
 
 
     function getImageByType(type) {
@@ -47,7 +47,15 @@ const RecommendationList = ({filters, mapId}) => {
             setError(null);
 
             try {
-                const response = await fetch(`http://localhost:8000/api/recommendations`);
+
+                let response = null;
+                if (mapId !== undefined) { // cas avec un mapId pour récupérer toutes les recommendations liées à un
+                    // lieu existant sur OSM
+                    response = await fetch(`http://localhost:8000/api/recommendations?mapId=${mapId}`);
+                } else { // cas sans mapId pour tout récupérer
+                    response = await fetch(`http://localhost:8000/api/recommendations`);
+                }
+
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
                 }
@@ -56,20 +64,20 @@ const RecommendationList = ({filters, mapId}) => {
                 setRecommandations(jsonResponse);
             } catch (err) {
                 setError("Could not fetch locations. Please try again later. " + err.message);
+                setRecommandations([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchRecommandation();
-    }, []);
+    }, [mapId]);
 
     // const databaseFilters = filters.map(mapToDatabaseValue);
 
     return (
         <>
             {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
             {recommandations
                 // .filter((reco) => {
                 //     // Vérifiez si location existe et a un locationType correspondant
@@ -89,7 +97,7 @@ const RecommendationList = ({filters, mapId}) => {
                             title={location.name || "Nom inconnu"}
                             distance={40000}
                             comment={reco.comment || "Aucun commentaire"}
-                            onShowOnMap={() => setSelectedPosition(reco.coordinates)} // Passez les coordonnées au clic
+                            // onShowOnMap={() => setSelectedPosition(reco.coordinates)} // Passez les coordonnées au clic
 
                         />
                     );
