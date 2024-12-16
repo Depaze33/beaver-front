@@ -9,6 +9,7 @@ import RecommendationPage from "@/components/Recommendation/RecommendationPage.j
 import Login from './components/Login/Login.jsx';
 import Signup from './components/Signup/Signup.jsx';
 import { UserProvider } from './components/contexts/UserContext.jsx';
+import UserPage from '@/components/user_profil/UserPage';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         <Route path='/login' element={<Login />} />
                         <Route path='/signup' element={<Signup />} />
                         <Route path='/map' element={<Map />} />
+                        <Route path='/profile' element={<UserPage />} />
                     </Route>
                 </Routes>
             </UserProvider>

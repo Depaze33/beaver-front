@@ -1,0 +1,11 @@
+.inputs{
+    background-color: aquamarine;
+}
+
+.BtonSave{
+    background-color: rgb(23, 24, 24);
+    color: aqua;
+    display : flex;
+    align-items: center;
+    justify-content: center;
+}
