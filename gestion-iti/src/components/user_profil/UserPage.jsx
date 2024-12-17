@@ -6,15 +6,14 @@ import { Toaster, toaster } from "@/components/ui/toaster"
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from 'react-router-dom';
 
-// import { useUser } from "../contexts/UserContext";
-
 function UserPage() {
 
   // Déclaration des states -> équivalent attributs d'une classe
   const [currentUser, setCurrentUser] = useState({});
   const [newPassword, setNewPassword] = useState("");
   const [confirmationPassword, setConfirmationPassword] = useState("");
- const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
   
   // Déclaration des "useEffect" -> pour déclencher des actionsau montage/démontage/mise à jour des states 
   useEffect(() => {
@@ -93,6 +92,26 @@ function UserPage() {
       })
   }
 
+  const deleteUser = (userId) => {
+    fetch(`http://localhost:8000/api/users/${userId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to delete the user');
+        }
+        return response.text(); // or response.json() if the server sends a JSON message
+      })
+      .then((data) => {
+        setMessage('User successfully deleted!');
+        console.log(data);
+      })
+      .catch((error) => {
+        setMessage('Failed to delete user.');
+        console.error('Error:', error);
+      });
+  };
+
   // Retour du JSX -> éaquivalent HTML pour représentation du composant graphique
   return Object.keys(currentUser).length > 1 ? (<div>
     {/* {user} transfert le Json contenant les infos de User dans les elements enfants */}
@@ -140,8 +159,9 @@ function UserPage() {
       localStorage.removeItem("token")
       localStorage.removeItem("user")
       navigate('/login')
-    }} >signOut</Button>
-    <Button>Delete Account</Button>
+    }} >sign Out</Button>
+    <Button onClick={()=> deleteUser()}>Delete Account</Button>
+    {message && <p>{message}</p>}
     </div>) : "Utilisateur non authentifié" 
 }
 
