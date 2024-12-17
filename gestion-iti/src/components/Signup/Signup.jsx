@@ -33,11 +33,10 @@ function Signup() {
 
     useEffect(() => {
         // Appel de l'API pour récupérer les CGU
-        fetch("http://localhost:8000/api/cgu/6756a9b954680b52e9e9496a")  // Remplacez par l'URL de votre API
-            .then(response => response.text())
+        fetch("http://localhost:8000/api/cgu")  // Remplacez par l'URL de votre API
+            .then(response => response.json())
             .then(data => {
-                console.log(data);
-                setCguText(data); // Récupère le texte des CGU
+                setCguText(data[0].text);// Récupère le texte des CGU
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération des CGU", error);

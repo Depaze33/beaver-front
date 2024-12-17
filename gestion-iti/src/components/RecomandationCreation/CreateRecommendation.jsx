@@ -28,7 +28,9 @@ const CreateRecommendation = ({location}) => {
     const [notationReco, setNotationReco] = useState(true);
     const internetRef = useRef(false);
     const accesPRMRef = useRef(true);
-    const userId = '673af1d2ed6e66efdc49202c';
+
+
+
 
     const handleSubmit = async () => {
 
@@ -52,21 +54,27 @@ const CreateRecommendation = ({location}) => {
                 "internet": internetRef.current,
                 "accesPRM": accesPRMRef.current,
                 "favorite": true
-            };
 
+            };
+        let stringJsonUser = localStorage.getItem('user');
+        let user = JSON.parse(stringJsonUser);
         const recommendationJson = {
             comment,
             notationReco,
-            user: {id: userId},
             location: locationJson,
-        };
+            user:
+                {id: user.id}
 
+        };
+        console.log(user.id);
+        console.log(comment)
         try {
             const response = await fetch('http://localhost:8000/api/recommendations', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify(recommendationJson),
             });
