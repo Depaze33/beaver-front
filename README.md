@@ -1,8 +1,8 @@
-# Fusion Forge - Frontend
+# Beaver - Frontend
 
 ## Description
 
-Ce repository contient le frontend de l'application **Fusion Forge**, un projet de fin d'année pour valider notre diplôme **Bac +4 Concepteur Développeur d'Applications** à l'**AFPA de Bègles**.
+Ce repository contient le frontend de l'application **Beaver**, un projet de fin d'année pour valider notre diplôme **Bac +4 Concepteur Développeur d'Applications** à l'**AFPA de Bègles**.
 
 Le frontend est développé avec **React**, installé via **Vite**, et utilise **Chakra-UI** comme bibliothèque de composants pour un design moderne et réactif.
 
