@@ -62,7 +62,7 @@
     border: 2px solid #F58D47;
     border-radius: 15px;
     width: 350px;
-    height: 160px;
+    min-height: 160px;
     padding: 3px;
 
 
@@ -112,7 +112,7 @@
 .card-footer{
     display: flex;
     justify-content:flex-end;
-    align-items: flex-end;
+    align-items: center;
     gap: 10px
 }
 .like{
