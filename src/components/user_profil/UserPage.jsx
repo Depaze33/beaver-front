@@ -15,6 +15,7 @@ function UserPage() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   
+  
   // Déclaration des "useEffect" -> pour déclencher des actionsau montage/démontage/mise à jour des states 
   useEffect(() => {
     let stringJsonUser = localStorage.getItem('user');
@@ -44,8 +45,8 @@ function UserPage() {
   const updateUser = id => {
     //TODO: changer user aver les information de connexion (Florian)
 
-    // 1 on récupère dans des variables les valeurs qui nous intéressent à partir du state "user" par décopsition du json: https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-    const { firstName, lastName, birthdate, pseudo, mail, tel } = user;
+    // 1 on récupère dans des variables les valeurs qui nous intéressent à partir du state "currentUser" par décopsition du json: https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+    const { firstName, lastName, birthdate, pseudo, mail, tel } = currentUser;
 
     // 2 on re-crée un JSON à partir des variables créées au préalable (comme le DTO) 
     const patchUserJson = {
@@ -58,8 +59,8 @@ function UserPage() {
       "newPassword": newPassword,
       "confirmationPassword": confirmationPassword
     }
-
-    fetch("http://localhost:8000/api/users/673b0c1bed6e66efdc49204c", {
+    
+    fetch(`http://localhost:8000/api/users/${currentUser.id}`, {
       method: "PATCH",
       body: JSON.stringify(patchUserJson),
       headers: {
@@ -160,7 +161,11 @@ function UserPage() {
       localStorage.removeItem("user")
       navigate('/login')
     }} >sign Out</Button>
-    <Button onClick={()=> deleteUser()}>Delete Account</Button>
+    <Button onClick={()=>{deleteUser(currentUser.id)
+      navigate('/login')
+    } 
+      
+      } >Delete Account</Button>
     {message && <p>{message}</p>}
     </div>) : "Utilisateur non authentifié" 
 }
