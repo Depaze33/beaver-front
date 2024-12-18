@@ -127,7 +127,9 @@ const CreateRecommendation = ({location}) => {
                     </Checkbox>
                 </DialogBody>
                 <DialogFooter>
-                    <Button onClick={handleSubmit}>Envoyer</Button>
+                    <Button onClick={
+                        handleSubmit
+                        }>Envoyer</Button>
                 </DialogFooter>
             </DialogContent>
         </DialogRoot>
