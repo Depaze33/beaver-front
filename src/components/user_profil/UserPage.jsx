@@ -61,11 +61,13 @@ function UserPage() {
       "confirmationPassword": confirmationPassword
     }
     
+    let token = localStorage.getItem('token')
     fetch(`http://localhost:8000/api/users/${currentUser.id}`, {
       method: "PATCH",
       body: JSON.stringify(patchUserJson),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer " + token
       },
     })
       .then((response) => {
