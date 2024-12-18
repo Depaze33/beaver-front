@@ -5,6 +5,7 @@ import styles from "@/components/user_profil/DivInputChakraUi.module.css"
 import { Toaster, toaster } from "@/components/ui/toaster"
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from 'react-router-dom';
+import { Alert } from "@/components/ui/alert"
 
 function UserPage() {
 
@@ -163,10 +164,11 @@ function UserPage() {
     }} >sign Out</Button>
     <Button onClick={()=>{deleteUser(currentUser.id)
       navigate('/login')
+      alert("L'utilisateur a bien été supprimé")
     } 
-      
-      } >Delete Account</Button>
-    {message && <p>{message}</p>}
+    
+  } >Delete Account</Button>
+  {message && <p>{message}</p>}
     </div>) : "Utilisateur non authentifié" 
 }
 

@@ -11,7 +11,7 @@ const TopBar = () => {
             <div className="logo-top">
                 <p className="logo-name">BEA</p>
                 <Image className="logo" src="/logo.svg"/>
-                <p className="logo-name">VEAR</p>
+                <p className="logo-name">VER</p>
             </div>
 
             <div className="top-bar-right">
