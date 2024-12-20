@@ -5,7 +5,7 @@ import styles from "@/components/user_profil/DivInputChakraUi.module.css"
 import { Toaster, toaster } from "@/components/ui/toaster"
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from 'react-router-dom';
-import { Alert } from "@/components/ui/alert"
+
 
 function UserPage() {
 
@@ -18,6 +18,7 @@ function UserPage() {
   
   
   // Déclaration des "useEffect" -> pour déclencher des actionsau montage/démontage/mise à jour des states 
+  // Ce hook est utilisé ici pour charger les informations de l'utilisateur depuis le localStorage lorsque le composant est monté.
   useEffect(() => {
     let stringJsonUser = localStorage.getItem('user');
     let user = JSON.parse(stringJsonUser);
@@ -60,6 +61,7 @@ function UserPage() {
       "newPassword": newPassword,
       "confirmationPassword": confirmationPassword
     }
+    
     
     let token = localStorage.getItem('token')
     fetch(`http://localhost:8000/api/users/${currentUser.id}`, {
