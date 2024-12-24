@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import RecoCard from "@/components/Recommendation/RecommendationList/RecoCard.jsx";
 import PropTypes from "prop-types";
+import URL_API from '../../../apiConfig/urlApi';
 
 
 /**
@@ -50,11 +51,11 @@ const RecommendationList = ({filters, mapId}) => {
                 let response = null;
                 if (mapId !== undefined) { // cas avec un mapId pour récupérer toutes les recommendations liées à un
                     // lieu existant sur OSM
-                    response = await fetch(`http://localhost:8000/api/recommendations?mapId=${mapId}`, {
+                    response = await fetch(`${URL_API}/api/recommendations?mapId=${mapId}`, {
                         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
                     });
                 } else { // cas sans mapId pour tout récupérer
-                    response = await fetch(`http://localhost:8000/api/recommendations`, {
+                    response = await fetch(`${URL_API}/api/recommendations`, {
                         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
                     });
                 }

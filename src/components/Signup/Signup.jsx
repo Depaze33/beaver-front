@@ -15,6 +15,7 @@ import {
     DialogRoot,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import URL_API from "../../apiConfig/urlApi";
 
 function Signup() {
     const [error, setError] = useState(null);
@@ -28,15 +29,14 @@ function Signup() {
     });
     const [validationErrors, setValidationErrors] = useState({});
     const [emailExists, setEmailExists] = useState(false);
-    const [cguText, setCguText] = useState("");  // État pour stocker le texte des CGU
+    const [cguText, setCguText] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Appel de l'API pour récupérer les CGU
-        fetch("http://localhost:8000/api/cgu")  // Remplacez par l'URL de votre API
+        fetch(`${URL_API}/api/cgu`)  
             .then(response => response.json())
             .then(data => {
-                setCguText(data[0].text);// Récupère le texte des CGU
+                setCguText(data[0].text);
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération des CGU", error);
@@ -115,7 +115,7 @@ function Signup() {
     };
 
     const checkEmailAvailability = (email) => {
-        return fetch('http://localhost:8000/auth/check-email', {
+        return fetch(`${URL_API}/api/auth/check-email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -147,8 +147,6 @@ function Signup() {
 
         setEmailExists(false);
 
-        const API_URL = 'http://localhost:8000/auth/signup';
-
         const requestBody = {
             email: formData.email,
             password: formData.password,
@@ -157,7 +155,7 @@ function Signup() {
             pseudo: formData.pseudo || undefined,
         };
 
-        fetch(API_URL, {
+        fetch(`${URL_API}/api/auth/signup`, {
             body: JSON.stringify(requestBody),
             method: "POST",
             headers: {
@@ -173,6 +171,7 @@ function Signup() {
             .then(() => {
                 navigate('/login');
             })
+            // eslint-disable-next-line no-unused-vars
             .catch((error) => {
                 setError("Erreur: L'email renseigné existe déjà !");
             });

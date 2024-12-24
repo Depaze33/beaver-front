@@ -6,6 +6,7 @@ import { Toaster, toaster } from "@/components/ui/toaster"
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from 'react-router-dom';
 import { Alert } from "@/components/ui/alert"
+import URL_API from '../../apiConfig/urlApi';
 
 function UserPage() {
 
@@ -61,7 +62,7 @@ function UserPage() {
       "confirmationPassword": confirmationPassword
     }
     
-    fetch(`http://localhost:8000/api/users/${currentUser.id}`, {
+    fetch(`${URL_API}/api/users/${currentUser.id}`, {
       method: "PATCH",
       body: JSON.stringify(patchUserJson),
       headers: {
@@ -95,7 +96,7 @@ function UserPage() {
   }
 
   const deleteUser = (userId) => {
-    fetch(`http://localhost:8000/api/users/${userId}`, {
+    fetch(`${URL_API}/api/users/${userId}`, {
       method: 'DELETE',
     })
       .then((response) => {

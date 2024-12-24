@@ -8,6 +8,7 @@ import { Input, Button, Link } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useUser } from "../contexts/UserContext";
+import URL_API from "../../apiConfig/urlApi";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -31,14 +32,12 @@ function Login() {
     const logInButtonClick = () => {
         if (!isFormValid()) return;
 
-        const API_URL = 'http://localhost:8000/auth/login';
-
         const requestBody = {
             email: formData.email,
             password: formData.password,
         };
 
-        fetch(API_URL, {
+        fetch(`${URL_API}/api/auth/login`, {
             body: JSON.stringify(requestBody),
             method: "POST",
             headers: {
@@ -53,9 +52,6 @@ function Login() {
                 return response.json();
             })
             .then((data) => {
-               // à enlever plus tard
-                // TODO bien vérfifier que le Json récupéré est similaire au Json renvoyé par le server
-                // lors d'une requête telle que http://localhost:8000/api/users/673b0c1bed6e66efdc49204c
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 navigate('/');

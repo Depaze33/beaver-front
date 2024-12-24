@@ -1,5 +1,5 @@
-# Etape 1 : compilation du projet(mise à jour du numero en fonction du numero de version java utilisée)
-FROM node:21-alpine AS builder
+# Etape 1 : compilation du projet
+FROM node:23-alpine AS builder
 # paramétrage du dossier courant pour le build
 WORKDIR /app
 COPY . .
@@ -9,8 +9,8 @@ RUN rm -rf node_modules
 RUN npm ci
 RUN npm run build
 
-# Etape 2 : utilisation d'une image de serveur http pour servir le site précompilé(mise à jour du numero de version sur : https://hub.docker.com/_/nginx)
-FROM nginx:1.27.3-alpine
+# Etape 2 : utilisation d'une image de serveur http pour servir le site précompilé
+FROM nginx:1.25.1-alpine
 EXPOSE 8080
 COPY --chown=nginx:nginx nginx-ui.conf /etc/nginx/conf.d/default.conf
-COPY --chown=nginx:nginx --from=builder /app/build /var/www/html/
+COPY --chown=nginx:nginx --from=builder /app/dist /var/www/html/

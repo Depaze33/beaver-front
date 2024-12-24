@@ -16,6 +16,7 @@ import Note from '@/components/RecomandationCreation/Note.jsx';
 import {Button} from '@/components/ui/button.jsx';
 import PropTypes from "prop-types";
 import RecommendationList from "@/components/Recommendation/RecommendationList/RecommendationList.jsx";
+import URL_API from '../../apiConfig/urlApi';
 
 /**
  *
@@ -69,7 +70,7 @@ const CreateRecommendation = ({location}) => {
         console.log(user.id);
         console.log(comment)
         try {
-            const response = await fetch('http://localhost:8000/api/recommendations', {
+            const response = await fetch(`${URL_API}/api/recommendations`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

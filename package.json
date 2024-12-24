@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^3.2.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "beaver": "file:",
     "framer-motion": "^11.13.5",
     "gestion-iti": "file:",
     "leaflet": "^1.9.4",
