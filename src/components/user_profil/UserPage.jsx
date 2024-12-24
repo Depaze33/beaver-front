@@ -19,6 +19,7 @@ function UserPage() {
   
   
   // Déclaration des "useEffect" -> pour déclencher des actionsau montage/démontage/mise à jour des states 
+  // Ce hook est utilisé ici pour charger les informations de l'utilisateur depuis le localStorage lorsque le composant est monté.
   useEffect(() => {
     let stringJsonUser = localStorage.getItem('user');
     let user = JSON.parse(stringJsonUser);
@@ -67,6 +68,7 @@ function UserPage() {
       body: JSON.stringify(patchUserJson),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer " + token
       },
     })
       .then((response) => {
